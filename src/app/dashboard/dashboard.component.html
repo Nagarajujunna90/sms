@@ -1,15 +1,11 @@
-<!-- app.component.html (or layout.component.html) -->
-<div class="main-layout">
-  <div class="sidebar">
-    <ul>
-      <li><a routerLink="/dashboard/students" routerLinkActive="active">Students</a></li>
-      <li><a routerLink="/teachers" routerLinkActive="active">Teachers</a></li>
-      <li><a routerLink="/attendance" routerLinkActive="active">Attendance</a></li>
-      <li><a routerLink="/classes" routerLinkActive="active">Classes</a></li>
-    </ul>
-  </div>
-  
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
+<!-- Sidebar -->
+<div class="sidebar">
+  <ul>
+    <li><a routerLink="students" routerLinkActive="active">Students</a></li>
+  </ul>
+</div>
+
+<!-- Main content -->
+<div class="content">
+  <router-outlet></router-outlet> <!-- Only ONE router outlet here -->
 </div>

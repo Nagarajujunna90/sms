@@ -1,0 +1,73 @@
+<div class="form-container">
+    <h3>Previous Education Details</h3>
+  
+    <div *ngFor="let edu of previousEducations; let i = index" class="education-entry">
+      <mat-card class="mb-3">
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Institution Name</mat-label>
+              <input matInput [(ngModel)]="edu.institutionName" name="institutionName{{i}}">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Board</mat-label>
+              <input matInput [(ngModel)]="edu.board" name="board{{i}}">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Class Grade</mat-label>
+              <input matInput [(ngModel)]="edu.classGrade" name="classGrade{{i}}">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Marks Obtained</mat-label>
+              <input matInput type="number" [(ngModel)]="edu.marksObtained" (blur)="calculatePercentage(edu)" name="marksObtained{{i}}">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Total Marks</mat-label>
+              <input matInput type="number" [(ngModel)]="edu.totalMarks" (blur)="calculatePercentage(edu)" name="totalMarks{{i}}">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Percentage</mat-label>
+              <input matInput type="number" [value]="edu.percentage" readonly>
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Year of Passing</mat-label>
+              <input matInput [(ngModel)]="edu.yearOfPassing" name="yearOfPassing{{i}}">
+            </mat-form-field>
+          </div>
+  
+          <div class="col-md-2 mt-2">
+            <button mat-icon-button color="warn" (click)="removeEntry(i)" *ngIf="previousEducations.length > 1">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  
+    <div class="mb-3">
+      <button mat-stroked-button color="primary" (click)="addNewEntry()">+ Add Another</button>
+    </div>
+  
+    <div>
+      <button mat-raised-button color="primary" (click)="savePreviousEducation()">Save</button>
+    </div>
+  </div>
+  

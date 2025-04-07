@@ -7,7 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
 import { RouterModule, Routes } from '@angular/router';
-import { StudentsModule } from './students/students.module';
+import { StudentsModule } from './students/student.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { DashboardModule } from './dashboard/dashboard.module';

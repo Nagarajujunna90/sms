@@ -4,7 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 
 export const routes: Routes = [
     { path: '', component: DashboardComponent }, // Default page inside Dashboard
-    { path: 'students', loadChildren: () => import('../students/students.module').then(m => m.StudentsModule) },
+    { path: 'students', loadChildren: () => import('../students/student.module').then(m => m.StudentModule) },
   ];
   
   @NgModule({

@@ -1,30 +1,25 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { StudentsRoutingModule } from './student-routing.module'; // ✅ Import StudentRoutingModule
+import { StudentsRoutingModule } from './student-routing.module'; 
 import { StudentAddComponent } from './student-add/student-add.component';
 import { StudentListComponent } from './student-list/student-list.component';
 import { StudentEditComponent } from './student-edit/student-edit.component';
 import { StudentDeleteComponent } from './student-delete/student-delete.component';
 import { SharedModule } from '../shared/shared.module';
+import { StudentPreviousEducationComponent } from './student-previous-education/student-previous-education.component';
+import { StudentComponent } from './student.component';
+import { StudentsAddRoutingModule } from './student-add/student-add-routing.module';
 
 @NgModule({
   imports: [
     SharedModule,
     StudentsRoutingModule,
-    StudentAddComponent,
-    StudentEditComponent,
-    StudentDeleteComponent,
-    StudentListComponent
+    StudentComponent
   ],
   exports: [
     SharedModule,
     StudentsRoutingModule,
-    StudentAddComponent,
-    StudentEditComponent,
-    StudentDeleteComponent,
-    RouterModule
+    RouterModule,
   ]
 })
-export class StudentsModule {}
+export class StudentModule {}

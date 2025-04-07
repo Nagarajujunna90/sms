@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Student } from '../models/student.model';
 import { Address } from '../models/Address.model';
 import { AcademicDetails } from '../models/AcademicDetails.model';
+import { PreviousEducationDetails } from '../models/previous-ecucation.model';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,9 @@ saveGradeDetails(data: any): Observable<any> {
   return this.http.post('http://localhost:6063/ems/v1/student/academic', data,{ headers: this.getHeaders() });
 }
 
+savePreviousEducation(data: PreviousEducationDetails[]) {
+  return this.http.post('http://localhost:6063/ems/v1/student/previous-education', data); // adjust endpoint
+}
 
 
  private getHeaders() {

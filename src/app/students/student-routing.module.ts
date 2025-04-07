@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { StudentsComponent } from './students.component';
+import { StudentComponent } from './student.component';
 import { StudentListComponent } from './student-list/student-list.component';
-import { StudentAddComponent } from './student-add/student-add.component';
 import { StudentEditComponent } from './student-edit/student-edit.component';
 import { StudentDeleteComponent } from './student-delete/student-delete.component';
 
-const routes: Routes = [
-  { 
-    path: '', component: StudentsComponent, // Student Dashboard Page
+export const routes: Routes = [
+  {
+    path: '',
+    component: StudentComponent,
     children: [
-      { path: 'list', component: StudentListComponent },  // View students
-      { path: 'add', component: StudentAddComponent },    // Add student
-      { path: 'edit/:id', component: StudentEditComponent },  // Edit student
-      { path: 'delete/:id', component: StudentDeleteComponent }  // Delete student
+      //  { path: '', redirectTo: 'add', pathMatch: 'full' },
+      { path: 'list', component: StudentListComponent },
+      { path: 'edit/:id', component: StudentEditComponent },
+      { path: 'delete/:id', component: StudentDeleteComponent },
+      { path: 'add',loadChildren: () =>import('./student-add/student-add.module').then(m => m.StudentAddModule) }
     ]
   }
 ];
