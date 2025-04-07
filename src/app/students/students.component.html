@@ -1,0 +1,23 @@
+<!-- app.component.html (or layout.component.html) -->
+<div class="main-layout">
+  <div class="sidebar">
+    <ul>
+      <li><a routerLink="/dashboard/students" routerLinkActive="active">Students</a></li>
+      <li><a routerLink="/teachers" routerLinkActive="active">Teachers</a></li>
+      <li><a routerLink="/attendance" routerLinkActive="active">Attendance</a></li>
+      <li><a routerLink="/classes" routerLinkActive="active">Classes</a></li>
+    </ul>
+  </div>  
+  <div class="content">
+<h2>Student Dashboard</h2>
+<nav>
+  <ul>
+    <li><a routerLink="list">View Students</a>
+    <a routerLink="add">Add Student</a></li>
+  </ul>
+</nav>
+<router-outlet></router-outlet>
+
+</div>
+
+</div>

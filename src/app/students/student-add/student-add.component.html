@@ -1,0 +1,148 @@
+<div class="container">
+  <h2>🏫 NR High School - Add Student Details</h2>
+
+  <!-- Tab Navigation -->
+  <mat-tab-group [(selectedIndex)]="selectedTab">
+
+    <!-- Personal Info -->
+    <mat-tab label="Personal Info">
+      <div class="form-container">
+        <h3>Personal Information</h3>
+
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Username</mat-label>
+              <input matInput type="text" [(ngModel)]="personalInfo.userName" required>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>First Name</mat-label>
+              <input matInput type="text" [(ngModel)]="personalInfo.firstName" required>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Last Name</mat-label>
+              <input matInput type="text" [(ngModel)]="personalInfo.lastName" required>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Mother's Name</mat-label>
+              <input matInput type="text" [(ngModel)]="personalInfo.motherName">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Father's Name</mat-label>
+              <input matInput type="text" [(ngModel)]="personalInfo.fatherName">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Guardian's Name</mat-label>
+              <input matInput type="text" [(ngModel)]="personalInfo.guardianName">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Gender</mat-label>
+              <mat-select [(ngModel)]="personalInfo.gender">
+                <mat-option value="">Select</mat-option>
+                <mat-option value="Male">Male</mat-option>
+                <mat-option value="Female">Female</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Age</mat-label>
+              <input matInput type="number" [(ngModel)]="personalInfo.age">
+            </mat-form-field>
+          </div>
+          <div class="col-md-4">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Date of Birth</mat-label>
+              <input matInput type="date" [(ngModel)]="personalInfo.dateOfBirth">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row text-center">
+          <button mat-raised-button color="primary" (click)="savePersonalInfo()">Save Personal Info</button>
+        </div>
+      </div>
+    </mat-tab>
+
+    <!-- Address -->
+    <mat-tab label="Address">
+      <div class="form-container">
+        <h3>Address</h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Street</mat-label>
+          <input matInput type="text" [(ngModel)]="address.street" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>City</mat-label>
+          <input matInput type="text" [(ngModel)]="address.city" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>State</mat-label>
+          <input matInput type="text" [(ngModel)]="address.state" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>ZIP Code</mat-label>
+          <input matInput type="text" [(ngModel)]="address.zip" required>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="saveAddress()">Save Address</button>
+      </div>
+    </mat-tab>
+
+    <!-- Grade & Academic -->
+    <mat-tab label="Grade & Academic">
+      <div class="form-container">
+        <h3>Grade & Academic</h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Grade</mat-label>
+          <mat-select [(ngModel)]="gradeDetails.grade">
+            <mat-option *ngFor="let g of grades" [value]="g">{{ g }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Section</mat-label>
+          <input matInput type="text" [(ngModel)]="gradeDetails.section" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Roll Number</mat-label>
+          <input matInput type="text" [(ngModel)]="gradeDetails.rollNumber" required>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <!-- <mat-label>Academic Year</mat-label>
+            <input matInput type="date" [(ngModel)]="gradeDetails.academicYear"> -->
+          <mat-label for="academicYear">Select Academic Year:</mat-label>
+          <mat-select id="academicYear" [(ngModel)]="gradeDetails.academicYear">
+            <mat-option *ngFor="let year of academicYears" [value]="year">
+              {{ year }}
+            </mat-option></mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Student Status</mat-label>
+          <mat-select [(ngModel)]="gradeDetails.studentStatus">
+            <mat-option value="">Select</mat-option>
+            <mat-option value="Active">Active</mat-option>
+            <mat-option value="InActive">InActive</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="saveGrade()">Save Grade</button>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
