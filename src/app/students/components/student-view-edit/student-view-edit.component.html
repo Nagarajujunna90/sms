@@ -1,0 +1,116 @@
+<div class="grid-container">
+  <!-- Personal Info -->
+  <div class="grid-card">
+    <h3>Personal Info</h3>
+    <div class="grid-two-column">
+      <label>First Name
+        <input type="text" [(ngModel)]="student.firstName" />
+      </label>
+      <label>Last Name
+        <input type="text" [(ngModel)]="student.lastName" />
+      </label>
+      <label>Date of Birth
+        <input type="date" [(ngModel)]="student.dateOfBirth" />
+      </label>
+      <label>Gender
+        <input type="text" [(ngModel)]="student.gender" />
+      </label>
+    </div>
+  </div>
+
+  <!-- Grade Info -->
+  <div class="grid-card">
+    <h3>Grade Info</h3>
+    <div class="grid-two-column">
+      <label>Grade
+        <input type="text" [(ngModel)]="student.studentGrade.classGrade" />
+      </label>
+      <label>Section
+        <input type="text" [(ngModel)]="student.studentGrade.section" />
+      </label>
+      <label>Roll Number
+        <input type="text" [(ngModel)]="student.studentGrade.rollNumber" />
+      </label>
+    </div>
+  </div>
+  <div class="grid-card">
+    <h3>Parent / Guardian Info</h3>
+
+    <table mat-table [dataSource]="student.studentParentGuardians" class="mat-elevation-z2 full-width">
+      <!-- Name -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let g"> {{ g.name }} </td>
+      </ng-container>
+
+      <!-- Phone -->
+      <ng-container matColumnDef="mobileNumber">
+        <th mat-header-cell *matHeaderCellDef> Phone </th>
+        <td mat-cell *matCellDef="let g"> {{ g.mobileNumber }} </td>
+      </ng-container>
+
+      <!-- Occupation -->
+      <ng-container matColumnDef="occupation">
+        <th mat-header-cell *matHeaderCellDef> Occupation </th>
+        <td mat-cell *matCellDef="let g"> {{ g.occupation }} </td>
+      </ng-container>
+
+      <!-- Age -->
+      <ng-container matColumnDef="age">
+        <th mat-header-cell *matHeaderCellDef> Age </th>
+        <td mat-cell *matCellDef="let g"> {{ g.age }} </td>
+      </ng-container>
+
+      <!-- Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let g"> {{ g.email }} </td>
+      </ng-container>
+      <!-- 
+      <ng-container matColumnDef="qualification">
+        <th mat-header-cell *matHeaderCellDef> Qualification </th>
+        <td mat-cell *matCellDef="let g"> {{ g.qualification }} </td>
+      </ng-container>
+      <ng-container matColumnDef="relationType">
+        <th mat-header-cell *matHeaderCellDef> Relation Type </th>
+        <td mat-cell *matCellDef="let g"> {{ g.relationType }} </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let g; let i = index">
+          <button mat-button color="primary" (click)="editGuardian(i)">Edit</button>
+        </td>
+      </ng-container> -->
+
+      <!-- Row Declarations -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+
+  <!-- Address Info -->
+  <div class="grid-card">
+    <h3>Address</h3>
+    <div class="grid-two-column">
+      <label>House Number
+        <input type="text" [(ngModel)]="student.studentAddresses[0].houseNumber" />
+      </label>
+      <label>Area
+        <input type="text" [(ngModel)]="student.studentAddresses[0].area" />
+      </label>
+      <label>City
+        <input type="text" [(ngModel)]="student.studentAddresses[0].city" />
+      </label>
+      <label>State
+        <input type="text" [(ngModel)]="student.studentAddresses[0].state" />
+      </label>
+      <label>Country
+        <input type="text" [(ngModel)]="student.studentAddresses[0].country" />
+      </label>
+      <label>Zip Code
+        <input type="text" [(ngModel)]="student.studentAddresses[0].zipCode" />
+      </label>
+    </div>
+  </div>
+</div>

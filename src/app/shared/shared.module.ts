@@ -5,13 +5,16 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MaterialModule } from '../material.module';
+import { MaterialModule } from './material.module';
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
+    RouterModule,
     NgFor,
     MatTabsModule,
-    MaterialModule],
+    MaterialModule
+  ],
   exports: [
     CommonModule,
     FormsModule,

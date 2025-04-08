@@ -1,0 +1,58 @@
+<div class="form-container">
+  <h3>Grade & Academic</h3>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Grade</mat-label>
+        <mat-select [(ngModel)]="gradeDetails.grade">
+          <mat-option *ngFor="let g of grades" [value]="g">{{ g }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Section</mat-label>
+        <input matInput type="text" [(ngModel)]="gradeDetails.section" required>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Roll Number</mat-label>
+        <input matInput type="text" [(ngModel)]="gradeDetails.rollNumber" required>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Academic Year</mat-label>
+        <mat-select [(ngModel)]="gradeDetails.academicYear">
+          <mat-option *ngFor="let year of academicYears" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col-md-6">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Student Status</mat-label>
+        <mat-select [(ngModel)]="gradeDetails.studentStatus">
+          <mat-option value="">Select</mat-option>
+          <mat-option value="Active">Active</mat-option>
+          <mat-option value="InActive">InActive</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-12">
+      <button mat-raised-button color="primary" (click)="saveGrade()">Save Grade</button>
+    </div>
+  </div>
+</div>

@@ -1,23 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared.module';
-import { DashboardComponent } from './dashboard.component';
+import { StudentDashboardModule } from '../students/student-dashboard.module';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { StudentModule } from '../students/student.module';
+import { DashboardComponent } from './components/dashboard.component';
+import { StudentDashboardComponent } from '../students/components/student-dashboard/student-dashboard.component';
+import { StudentAddComponent } from '../students/components/student-add/student-add.component';
 
 @NgModule({
   imports: [
     SharedModule,
     DashboardRoutingModule,
-    StudentModule,
+    StudentDashboardModule,
+    StudentDashboardComponent,
+    StudentAddComponent,
     DashboardComponent
   ],
   exports: [
     SharedModule,
+    StudentDashboardModule,
     DashboardRoutingModule,
-    DashboardComponent,
-    StudentModule,
-    RouterModule
+    // DashboardComponent,
   ]
 })
 export class DashboardModule {}

@@ -1,0 +1,78 @@
+<div class="form-container">
+  <h3>Personal Information</h3>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Username</mat-label>
+        <input matInput type="text" [(ngModel)]="personalInfo.userName" required>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>First Name</mat-label>
+        <input matInput type="text" [(ngModel)]="personalInfo.firstName" required>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Last Name</mat-label>
+        <input matInput type="text" [(ngModel)]="personalInfo.lastName" required>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mother's Name</mat-label>
+        <input matInput type="text" [(ngModel)]="personalInfo.motherName">
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Father's Name</mat-label>
+        <input matInput type="text" [(ngModel)]="personalInfo.fatherName">
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Guardian's Name</mat-label>
+        <input matInput type="text" [(ngModel)]="personalInfo.guardianName">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Gender</mat-label>
+        <mat-select [(ngModel)]="personalInfo.gender">
+          <mat-option value="">Select</mat-option>
+          <mat-option value="Male">Male</mat-option>
+          <mat-option value="Female">Female</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Age</mat-label>
+        <input matInput type="number" [(ngModel)]="personalInfo.age">
+      </mat-form-field>
+    </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Date of Birth</mat-label>
+        <input matInput type="date" [(ngModel)]="personalInfo.dateOfBirth">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col-12">
+      <button mat-raised-button color="primary" (click)="savePersonalInfo()">
+        Save Personal Info
+      </button>
+    </div>
+  </div>
+</div>
