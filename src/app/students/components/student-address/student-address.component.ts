@@ -24,25 +24,30 @@ export class StudentAddressComponent {
     });
   }
 
-  address: Address = this.getDefaultAddress();
-  getDefaultAddress(): Address {
-    return {
-      houseNumber: '',
-      area: '',
-      city: '',
-      state: '',
-      country: '',
-      zipCode: '',
-      addressType: 'permanent',
-      studentId: 0
-    };
+  studentAddresses: Address[] = this.getDefaultAddress();
+
+  getDefaultAddress(): Address[] {
+    return [
+      {
+        addressId: 0,
+        houseNumber: '',
+        area: '',
+        city: '',
+        state: '',
+        country: '',
+        zipCode: '',
+        addressType: '',
+        landmark: '',
+        studentId: 0
+      }
+    ];
   }
-
+  
   saveAddress() {
-    this.address.studentId = this.studentId;
+    this.studentAddresses[0].studentId = this.studentId;
 
-    console.log(this.address)
-    this.studentService.saveAddress(this.address).subscribe({
+    console.log(this.studentAddresses)
+    this.studentService.saveAddress(this.studentAddresses[0]).subscribe({
       next: response => {
         this.showMessage('Address Saved Successfully!', 'success')
       },

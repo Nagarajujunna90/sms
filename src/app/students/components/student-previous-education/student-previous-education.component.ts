@@ -23,6 +23,8 @@ export class StudentPreviousEducationComponent implements OnInit {
     private snackBar: MatSnackBar,
     private studentDataService: StudentDataService
   ) {}
+  academicYears: string[] = [];
+  selectedYear: string = '';
 
   ngOnInit(): void {
     this.studentDataService.getStudentId$().subscribe(id => {
@@ -31,18 +33,29 @@ export class StudentPreviousEducationComponent implements OnInit {
       this.addNewEntry(); // Add at least one entry on load
     }
     });
+    const currentYear = new Date().getFullYear();
+    const range = 5; // generate 5 years (past, current, future)
+
+    for (let i = currentYear - 2; i <= currentYear + 2; i++) {
+      this.academicYears.push(`${i}-${i + 1}`);
+    }
   }
 
   addNewEntry(): void {
     this.previousEducations.push({
-      institutionName: '',
+      schoolName: '',
       board: '',
-      classGrade: '',
-      marksObtained: 0,
-      totalMarks: 0,
-      yearOfPassing: '',
+      grade: '',
       percentage: 0,
-      studentId: this.studentId
+      studentId: this.studentId,
+      section: '',
+      rollNumber: '',
+      medium: '',
+      studentStatus: '',
+      schoolAddress: '',
+      marks: 0,
+      totalMarks:0,
+      academicYear: ''
     });
   }
 
@@ -52,14 +65,15 @@ export class StudentPreviousEducationComponent implements OnInit {
 
   calculatePercentage(entry: PreviousEducationDetails): void {
     if (entry.totalMarks > 0) {
-      entry.percentage = +(entry.marksObtained / entry.totalMarks * 100).toFixed(2);
+      entry.percentage = +(entry.marks / entry.totalMarks * 100).toFixed(2);
     } else {
       entry.percentage = 0;
     }
   }
 
   savePreviousEducation(): void {
-    this.studentService.savePreviousEducation(this.previousEducations).subscribe({
+    const previousEducationRequest=this.previousEducations[0];
+    this.studentService.savePreviousEducation(previousEducationRequest).subscribe({
       next: () => this.showMessage('Previous education saved!', 'success'),
       error: () => this.showMessage('Failed to save previous education.', 'error')
     });

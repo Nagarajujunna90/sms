@@ -9,8 +9,8 @@ import { StudentService } from '../../services/student.service';
   selector: 'app-student-academic-details',
   standalone: true,
   imports: [SharedModule],
-  templateUrl: './student-academic.component.html',
-  styleUrls: ['./student-academic.component.css']
+  templateUrl: './student-current-academic.component.html',
+  styleUrls: ['./student-current-academic.component.css']
 })
 
 export class StudentAcademicDetailsComponent {

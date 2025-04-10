@@ -1,72 +1,47 @@
-<div class="form-container">
-  <h3>Address</h3>
-
-  <div class="row">
-    <!-- Address Type Dropdown -->
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Address Type</mat-label>
-        <mat-select [(ngModel)]="address.addressType" name="addressType" required>
-          <mat-option value="permanent">Permanent</mat-option>
-          <mat-option value="Present">Present</mat-option>
-        </mat-select>
-      </mat-form-field>
+<div class="card">
+  <h3>Address Info</h3>
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Address Type</label>
+      <select [(ngModel)]="studentAddresses[0].addressType">
+        <option value="permanent">Permanent</option>
+        <option value="present">Present</option>
+      </select>
     </div>
 
-    <!-- Flat Number -->
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>House Number</mat-label>
-        <input matInput name="houseNumber" [(ngModel)]="address.houseNumber" required>
-      </mat-form-field>
+    <div class="form-group">
+      <label>House Number</label>
+      <input type="text" [(ngModel)]="studentAddresses[0].houseNumber" />
     </div>
 
-    <!-- Area -->
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Area</mat-label>
-        <input matInput name="area" [(ngModel)]="address.area" required>
-      </mat-form-field>
+    <div class="form-group">
+      <label>Area</label>
+      <input type="text" [(ngModel)]="studentAddresses[0].area" />
     </div>
 
-    <!-- City -->
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>City</mat-label>
-        <input matInput name="city" [(ngModel)]="address.city" required>
-      </mat-form-field>
+    <div class="form-group">
+      <label>City</label>
+      <input type="text" [(ngModel)]="studentAddresses[0].city" />
     </div>
 
-    <!-- State -->
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>State</mat-label>
-        <input matInput name="state" [(ngModel)]="address.state" required>
-      </mat-form-field>
+    <div class="form-group">
+      <label>State</label>
+      <input type="text" [(ngModel)]="studentAddresses[0].state" />
     </div>
 
-    <!-- Country -->
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Country</mat-label>
-        <input matInput name="country" [(ngModel)]="address.country" required>
-      </mat-form-field>
+    <div class="form-group">
+      <label>Country</label>
+      <input type="text" [(ngModel)]="studentAddresses[0].country" />
     </div>
 
-    <!-- ZIP Code -->
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>ZIP Code</mat-label>
-        <input matInput name="zipCode" [(ngModel)]="address.zipCode" required>
-      </mat-form-field>
+    <div class="form-group">
+      <label>ZIP Code</label>
+      <input type="text" [(ngModel)]="studentAddresses[0].zipCode" />
+    </div>
+    <div class="form-group">
+      <label>Land Mark</label>
+      <input type="text" [(ngModel)]="studentAddresses[0].landmark" />
     </div>
   </div>
-
-  <div class="row text-center mt-3">
-    <div class="col-12">
-      <button mat-raised-button color="primary" (click)="saveAddress()">
-        Save Address
-      </button>
-    </div>
-  </div>
+  <button (click)="saveAddress()">Save Address</button>
 </div>

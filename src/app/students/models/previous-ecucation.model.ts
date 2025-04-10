@@ -1,11 +1,18 @@
 export interface PreviousEducationDetails {
-    institutionName: string;
+    grade: string;
+    section: string;
+    rollNumber: string;
+    medium: string;
+    studentStatus: string;
+    schoolName: string;
+    schoolAddress: string;
     board: string;
-    classGrade: string;
-    marksObtained: number;
-    totalMarks: number;
-    yearOfPassing: string;
-    percentage?: number;
-    studentId: number;
+    marks: number;
+    totalMarks:number;
+    percentage: number;
+    academicYear: string;
+    studentId:number;
+    
   }
+  
   

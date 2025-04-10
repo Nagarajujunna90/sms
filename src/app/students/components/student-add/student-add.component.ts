@@ -21,7 +21,7 @@ export class StudentAddComponent implements OnInit {
     private route: ActivatedRoute
   ) { }
   
-  tabRoutes = ['personal-info', 'address', 'academic', 'previous-education', 'reports'];
+  tabRoutes = ['personal-info','parent-guardian', 'address', 'academic', 'previous-education', 'reports'];
   selectedTab: number = 0;  // Initialize with first tab selected
   previousTab: number = 0; // to track last tab
 

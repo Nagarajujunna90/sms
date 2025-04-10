@@ -14,7 +14,19 @@ import { Student } from '../../models/studentResponse.model';
   styleUrl: './student-view-edit.component.css'
 })
 export class StudentViewEditComponent {
-  displayedColumns: string[] = ['name', 'mobileNumber','occupation','email','age'];
+
+  isEditMode: boolean = false; // default to view-only
+
+
+saveAddress() {
+throw new Error('Method not implemented.');
+}
+  saveGuardianInfo() {
+    throw new Error('Method not implemented.');
+  }
+  saveContactInfo() {
+    throw new Error('Method not implemented.');
+  }
 
   // Dummy function for edit (you can open a modal or make fields editable)
   editGuardian(index: number) {
@@ -22,94 +34,149 @@ export class StudentViewEditComponent {
     console.log("Edit guardian:", selectedGuardian);
     // Show editable form or open a dialog with selectedGuardian data
   }
- 
-  getEmptyStudent(): Student  {
-    return {  studentId: 0,
-    userName: '',
-    registrationId: 0,
-    firstName: '',
-    lastName: '',
-    motherName: '',
-    fatherName: '',
-    guardianName: '',
-    gender: '',
-    age: 0,
-    dateOfBirth: '',
-    contactInfo: null,
-    healthInfo: null,
-    hobbies: [],
-    profileImage: null,
-  
-    studentAddresses: [
-      {
-        addressId: 0,
-        addressType: '',
-        houseNumber: '',
-        area: '',
-        city: '',
-        state: '',
-        country: '',
-        zipCode: ''
-      }
-    ],
+
+  getEmptyStudent(): Student {
+    return {
+      studentId: 0,
+      firstName: '',
+      lastName: '',
+      dateOfBirth: '',
+      age: 0,
+      email: '',
+      phoneNumber: '',
+      identityMarks: '',
+      profilePhoto: '',
+      gender:'Female',
+      bloodGroup: '',
   
       studentParentGuardians: [
         {
-          guardianId: 1,
-          name: 'Ramesh',
-          guardianType: 'Father',
-          mobileNumber: '9876543210',
-          relationType: 'Parent',
-          occupation: 'Engineer',
-          email:'nagaraju@gmail.com',
-          age:25,
-          qualification:'MCA'
-        },
-        {
-          guardianId: 2,
-          name: 'Sita',
-          guardianType: 'Mother',
-          mobileNumber: '9876543211',
-          relationType: 'Parent',
-          occupation: 'Teacher',
-          email:'sita@gmail.com',
-          age:25,
-          qualification:'B.Com'
-        },
-        {
-          guardianId: 3,
-          name: 'Anand',
-          guardianType: 'Guardian',
-          mobileNumber: '9876543212',
-          relationType: 'Uncle',
-          occupation: 'Doctor',
-          email:'anand@gmail.com',
-          age:25,
-          qualification:'M.A'
+          guardianId: 0,
+          age: 0,
+          name: '',
+          qualification: '',
+          occupation: '',
+          mobileNumber: '',
+          email: '',
+          relationType: 'Father',
+          studentId: 0
         }
-      ]
-,
-    
+      ],
   
-    studentGrade: {
-      id:0,
-      classGrade: '',
-      section: '',
-      rollNumber: ''
-    },
+      studentGrade: {
+        gradeId: 0,
+        classGrade: '',
+        section: '',
+        rollNumber: 0,
+        admissionNumber: '',
+        academicYear: ''
+      },
   
-    studentDemographic: {
-      demographicId: 0,
-      motherTongue: '',
-    }
-  };
-}
+      studentPreviousAcademicDetails: [
+        {
+          schoolName: '',
+          grade: '',
+          section: '',
+          remark: '',
+          transferCertificate: false,
+          duration: '',
+          academicYear: '',
+          rollNumber: 0,
+          board: '',
+          percentage:''
+        }
+      ],
   
+      studentAddresses: [
+        {
+          addressId: 0,
+          houseNumber: '',
+          area: '',
+          city: '',
+          state: '',
+          country: '',
+          zipCode: '',
+          addressType: '',
+          landmark: ''
+        }
+      ],
+  
+      documents: [
+        {
+          documentType: '',
+          documentNumber: ''
+        }
+      ],
+  
+      studentDemographic: {
+        demographicId: 0,
+        motherTongue: '',
+        nationality: '',
+        religion: '',
+        caste: '',
+        subCaste: ''
+      },
+  
+      transport: {
+        modeOfTransport: 'Own',
+        pickupPoint: '',
+        busRouteNumber: '',
+        driverContact: '',
+        distanceFromSchool: ''
+      },
+  
+      feeDetails: {
+        totalFees: 0,
+        feePaid: 0,
+        balance: 0,
+        dueDates: [],
+        paymentHistory: [
+          {
+            date: '',
+            amount: 0,
+            mode: '',
+            transactionId: ''
+          }
+        ]
+      },
+  
+      attendance: {
+        daysPresent: 0,
+        daysAbsent: 0,
+        totalWorkingDays: 0,
+        percentage: 0,
+        termWiseBreakdown: [
+          {
+            term: '',
+            present: 0,
+            absent: 0,
+            workingDays: 0
+          }
+        ]
+      },
+  
+      healthInfo: {
+        allergies: '',
+        medicalConditions: '',
+        emergencyContact: ''
+      },
+  
+      loginCredentials: {
+        userName: '',
+        password: ''
+      }
+    };
+  }
+  
+  displayedColumns: string[] = ['name', 'mobileNumber', 'occupation', 'age', 'email'];
+  eduColumns: string[] = ['schoolName', 'grade', 'academicYear', 'percentage'];
+
+
   constructor(private route: ActivatedRoute, private studentService: StudentService, private snackBar: MatSnackBar) { }
   studentId: any;
   student: Student = this.getEmptyStudent(); // ✅ Add this line
- 
-  
+
+
   ngOnInit() {
     if (this.route.snapshot.params['id']) {
       this.studentId = this.route.snapshot.params['id']; // Edit Mode

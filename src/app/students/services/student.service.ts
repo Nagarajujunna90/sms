@@ -4,11 +4,13 @@ import { Observable } from 'rxjs';
 import { Address } from 'cluster';
 import { PreviousEducationDetails } from '../models/previous-ecucation.model';
 import { Student } from '../models/student.model';
+import { ParentGuardian } from '../models/parent-guardian.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
+  
   
   private apiUrl = 'http://localhost:6063/ems/v1/personal/student'; // Update API endpoint
 
@@ -24,13 +26,17 @@ export class StudentService {
   return this.http.post<Address>('http://localhost:6063/ems/v1/student/addresses', address,{ headers: this.getHeaders() });
 }
 
-// 🔹 Save Grade Details
-saveGradeDetails(data: any): Observable<any> {
-  return this.http.post('http://localhost:6063/ems/v1/student/academic', data,{ headers: this.getHeaders() });
+saveParentInfo(parentGuardian: any):Observable<ParentGuardian> {
+  return this.http.post<ParentGuardian>('http://localhost:6063/ems/v1/student/parent-guardians', parentGuardian,{ headers: this.getHeaders() });
 }
 
-savePreviousEducation(data: PreviousEducationDetails[]) {
-  return this.http.post('http://localhost:6063/ems/v1/student/previous-education', data); // adjust endpoint
+// 🔹 Save Grade Details
+saveGradeDetails(data: any): Observable<any> {
+  return this.http.post('http://localhost:6063/ems/v1/student/grade', data,{ headers: this.getHeaders() });
+}
+
+savePreviousEducation(data: PreviousEducationDetails) {
+  return this.http.post('http://localhost:6063/ems/v1/student/academic', data); // adjust endpoint
 }
 
 

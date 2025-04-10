@@ -4,7 +4,8 @@ import { StudentPersonalInfoComponent } from '../student-personal-info/student-p
 import { StudentAddressComponent } from '../student-address/student-address.component';
 import { StudentPreviousEducationComponent } from '../student-previous-education/student-previous-education.component';
 import { StudentAddComponent } from './student-add.component';
-import { StudentAcademicDetailsComponent } from '../student-academic/student-academic.component';
+import { StudentAcademicDetailsComponent } from '../student-current-academic/student-current-academic.component';
+import { StudentParentGardianComponent } from '../student-parent-gardian/student-parent-gardian.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,7 @@ export const routes: Routes = [
     { path: 'personal-info', component: StudentPersonalInfoComponent },
     { path: 'address', component: StudentAddressComponent },
       { path: 'academic', component: StudentAcademicDetailsComponent },
+      { path: 'parent-guardian', component: StudentParentGardianComponent },
       { path: 'previous-education', component: StudentPreviousEducationComponent }
 
     ]

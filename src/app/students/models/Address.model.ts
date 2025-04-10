@@ -1,4 +1,5 @@
 export interface Address {
+  addressId:number;
   addressType: string;
   houseNumber: string;
   area: string;
@@ -7,4 +8,5 @@ export interface Address {
   country:string;
   zipCode: string;
   studentId: number;
+  landmark: string;
 }
