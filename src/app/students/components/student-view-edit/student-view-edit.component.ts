@@ -4,7 +4,17 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { StudentService } from '../../services/student.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Student } from '../../models/studentResponse.model';
+import { LoginCredentials, StudentResponse } from '../../models/studentResponse.model';
+import { StudentAddress } from '../../models/student-address.model';
+import { StudentGrade } from '../../models/student-current-academic.model';
+import { StudentDemographic } from '../../models/student-demographic.model';
+import { StudentHealthInfo } from '../../models/student-health.model';
+import { StudentParentGardians } from '../../models/student-parent-guardians.models';
+import { StudentDocuments } from '../../models/student.documents.model';
+import { StudentAttendances } from '../../models/student-attendence.model';
+import { StudentFeeDetails } from '../../models/student-fee.model';
+import { StudentTransport } from '../../models/student-transport.model';
+import { StudentPreviousAcademicDetails } from '../../models/student-previous-academic.model';
 
 @Component({
   selector: 'app-student-view-edit',
@@ -14,28 +24,89 @@ import { Student } from '../../models/studentResponse.model';
   styleUrl: './student-view-edit.component.css'
 })
 export class StudentViewEditComponent {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private studentService: StudentService,
+    private snackBar: MatSnackBar) { }
 
-  isEditMode: boolean = false; // default to view-only
+  isEditMode: boolean = false;
+  displayedColumns: string[] = ['name', 'mobileNumber', 'occupation', 'age', 'email'];
+  eduColumns: string[] = ['schoolName', 'grade', 'academicYear', 'percentage'];
+  studentId: any;
 
+  ngOnInit() {
+    if (this.route.snapshot.params['id']) {
+      this.studentId = this.route.snapshot.params['id']; // Edit Mode
+      console.log(this.studentId)
+      this.studentService.getStudentById(this.studentId).subscribe({
+        next: response => {
+          console.log(response)
+          console.log(this.studentParentGuardians[0])
 
-saveAddress() {
-throw new Error('Method not implemented.');
-}
-  saveGuardianInfo() {
-    throw new Error('Method not implemented.');
+          this.student = {
+            ...this.getEmptyStudent(),
+            ...response
+          };
+          this.studentAddresses = this.student.studentAddresses;
+          this.studentParentGuardians = this.student.studentParentGuardians;
+          this.studentGrade = this.student.studentGrade;
+          this.studentPreviousAcademicDetails = this.student.studentPreviousAcademicDetails;
+          this.studentDocuments = this.student.documents;
+          this.studentDemographic = this.student.studentDemographic;
+          this.studentTransport = this.student.transport;
+          this.studentFeeDetails = this.student.feeDetails;
+          this.studentAttendance = this.student.attendance;
+          this.studentHealthInfo = this.student.healthInfo;
+          this.studentLoginCredentials = this.student.loginCredentials;
+          console.log(this.student)
+          // this.showMessage('Student details fetched Successfully!', 'success')
+        },
+        error: (err) => { }// this.showMessage(err.error?.errorMessage || 'Failed to get student details!', 'error')
+      });
+
+    }
+    if (!this.studentAddresses || this.studentAddresses.length === 0) {
+      this.studentAddresses = [{
+        addressType: '',
+        houseNumber: '',
+        area: '',
+        city: '',
+        state: '',
+        country: '',
+        zipCode: '',
+        landmark: '',
+        addressId: 0,
+        studentId: 0
+      }];
+    }
+
   }
-  saveContactInfo() {
-    throw new Error('Method not implemented.');
+
+  student: StudentResponse = this.getEmptyStudent();
+  studentAddresses: StudentAddress[] = this.student.studentAddresses;
+  studentParentGuardians: StudentParentGardians[] = this.student.studentParentGuardians;
+  studentGrade: StudentGrade = this.student.studentGrade;
+  studentPreviousAcademicDetails: StudentPreviousAcademicDetails[] = this.student.studentPreviousAcademicDetails;
+  studentDocuments: StudentDocuments[] = this.student.documents;
+  studentDemographic: StudentDemographic = this.student.studentDemographic;
+  studentTransport: StudentTransport = this.student.transport;
+  studentFeeDetails: StudentFeeDetails = this.student.feeDetails;
+  studentAttendance: StudentAttendances = this.student.attendance;
+  studentHealthInfo: StudentHealthInfo = this.student.healthInfo;
+  studentLoginCredentials: LoginCredentials = this.student.loginCredentials;
+
+  viewAndUpdateStudent(studentId: number) {
+    console.log(studentId)
+   // this.router.navigate(['dashboard/students/update', studentId, 'personal-info']);
+  //  this.router.navigate(['dashboard/students', studentId, 'personal-info']);
+  const id = this.route.snapshot.params['id'];
+  this.router.navigate([`/dashboard/students/update/${id}/personal-info`]);
+  
   }
 
-  // Dummy function for edit (you can open a modal or make fields editable)
-  editGuardian(index: number) {
-    const selectedGuardian = this.student.studentParentGuardians[index];
-    console.log("Edit guardian:", selectedGuardian);
-    // Show editable form or open a dialog with selectedGuardian data
-  }
 
-  getEmptyStudent(): Student {
+  getEmptyStudent(): StudentResponse {
     return {
       studentId: 0,
       firstName: '',
@@ -46,9 +117,8 @@ throw new Error('Method not implemented.');
       phoneNumber: '',
       identityMarks: '',
       profilePhoto: '',
-      gender:'Female',
-      bloodGroup: '',
-  
+      gender: 'Female',
+
       studentParentGuardians: [
         {
           guardianId: 0,
@@ -56,22 +126,23 @@ throw new Error('Method not implemented.');
           name: '',
           qualification: '',
           occupation: '',
-          mobileNumber: '',
+          phoneNumber: '',
           email: '',
           relationType: 'Father',
           studentId: 0
         }
       ],
-  
+
       studentGrade: {
         gradeId: 0,
-        classGrade: '',
+        grade: '',
         section: '',
         rollNumber: 0,
-        admissionNumber: '',
-        academicYear: ''
+        academicYear: '',
+        studentId: 0,
+        studentStatus: ''
       },
-  
+
       studentPreviousAcademicDetails: [
         {
           schoolName: '',
@@ -79,14 +150,20 @@ throw new Error('Method not implemented.');
           section: '',
           remark: '',
           transferCertificate: false,
-          duration: '',
           academicYear: '',
           rollNumber: 0,
           board: '',
-          percentage:''
+          percentage: 0,
+          medium: '',
+          studentStatus: '',
+          schoolAddress: '',
+          marks: 0,
+          totalMarks: 0,
+          studentId: 0,
+          id: 0
         }
       ],
-  
+
       studentAddresses: [
         {
           addressId: 0,
@@ -97,17 +174,18 @@ throw new Error('Method not implemented.');
           country: '',
           zipCode: '',
           addressType: '',
-          landmark: ''
+          landmark: '',
+          studentId: 0
         }
       ],
-  
+
       documents: [
         {
           documentType: '',
           documentNumber: ''
         }
       ],
-  
+
       studentDemographic: {
         demographicId: 0,
         motherTongue: '',
@@ -116,7 +194,7 @@ throw new Error('Method not implemented.');
         caste: '',
         subCaste: ''
       },
-  
+
       transport: {
         modeOfTransport: 'Own',
         pickupPoint: '',
@@ -124,7 +202,7 @@ throw new Error('Method not implemented.');
         driverContact: '',
         distanceFromSchool: ''
       },
-  
+
       feeDetails: {
         totalFees: 0,
         feePaid: 0,
@@ -139,7 +217,7 @@ throw new Error('Method not implemented.');
           }
         ]
       },
-  
+
       attendance: {
         daysPresent: 0,
         daysAbsent: 0,
@@ -154,87 +232,18 @@ throw new Error('Method not implemented.');
           }
         ]
       },
-  
+
       healthInfo: {
         allergies: '',
         medicalConditions: '',
         emergencyContact: ''
       },
-  
+
       loginCredentials: {
         userName: '',
         password: ''
       }
     };
-  }
-  
-  displayedColumns: string[] = ['name', 'mobileNumber', 'occupation', 'age', 'email'];
-  eduColumns: string[] = ['schoolName', 'grade', 'academicYear', 'percentage'];
-
-
-  constructor(private route: ActivatedRoute, private studentService: StudentService, private snackBar: MatSnackBar) { }
-  studentId: any;
-  student: Student = this.getEmptyStudent(); // ✅ Add this line
-
-
-  ngOnInit() {
-    if (this.route.snapshot.params['id']) {
-      this.studentId = this.route.snapshot.params['id']; // Edit Mode
-      console.log(this.studentId)
-      this.studentService.getStudentById(this.studentId).subscribe({
-        next: response => {
-          console.log(response)
-          this.student = {
-            ...this.getEmptyStudent(),
-            ...response
-          };
-          console.log(this.student)
-          this.showMessage('Student details fetched Successfully!', 'success')
-        },
-        error: (err) => this.showMessage(err.error?.errorMessage || 'Failed to get student details!', 'error')
-      });
-
-    }
-  }
-  successMessage: string = '';
-  errorMessage: string = '';
-
-  showMessage(message: string, type: 'success' | 'error') {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      panelClass: type === 'success' ? 'snackbar-success' : 'snackbar-error',
-      verticalPosition: 'top',
-      horizontalPosition: 'center'
-    });
-  }
-
-  savePersonalInfo() {
-    throw new Error('Method not implemented.');
-  }
-  personalForm!: FormGroup<any>;
-  saveAddressInfo() {
-    throw new Error('Method not implemented.');
-  }
-  addressForm!: FormGroup<any>;
-  saveGradeInfo() {
-    throw new Error('Method not implemented.');
-  }
-
-  gradeForm!: FormGroup<any>;
-  submitParentInfo() {
-    throw new Error('Method not implemented.');
-  }
-  submitAddressInfo() {
-    throw new Error('Method not implemented.');
-  }
-  submitGradeInfo() {
-    throw new Error('Method not implemented.');
-  }
-  submitPersonalInfo() {
-    throw new Error('Method not implemented.');
-  }
-  submitAttendanceInfo() {
-    throw new Error('Method not implemented.');
   }
 
 }

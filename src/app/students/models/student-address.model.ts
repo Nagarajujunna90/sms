@@ -1,6 +1,6 @@
-export interface Address {
+export interface StudentAddress {
   addressId:number;
-  addressType: string;
+  addressType: string | 'Permanent';
   houseNumber: string;
   area: string;
   city: string;

@@ -1,47 +1,52 @@
-<div class="card">
-  <h3>Address Info</h3>
+
+<div class="card" >
+  <h3>{{ isEditMode ? 'Update Address' : 'Add Address' }}</h3>
   <div class="form-grid">
-    <div class="form-group">
-      <label>Address Type</label>
-      <select [(ngModel)]="studentAddresses[0].addressType">
-        <option value="permanent">Permanent</option>
-        <option value="present">Present</option>
-      </select>
-    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Address Type</mat-label>
+      <mat-select [(ngModel)]="studentAddresses[0].addressType" name="addressType">
+        <mat-option value="permanent">Permanent</mat-option>
+        <mat-option value="present">Present</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-    <div class="form-group">
-      <label>House Number</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].houseNumber" />
-    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>House Number</mat-label>
+      <input matInput [(ngModel)]="studentAddresses[0].houseNumber" name="houseNumber" />
+    </mat-form-field>
 
-    <div class="form-group">
-      <label>Area</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].area" />
-    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Area</mat-label>
+      <input matInput [(ngModel)]="studentAddresses[0].area" name="area" />
+    </mat-form-field>
 
-    <div class="form-group">
-      <label>City</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].city" />
-    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>City</mat-label>
+      <input matInput [(ngModel)]="studentAddresses[0].city" name="city" />
+    </mat-form-field>
 
-    <div class="form-group">
-      <label>State</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].state" />
-    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>State</mat-label>
+      <input matInput [(ngModel)]="studentAddresses[0].state" name="state" />
+    </mat-form-field>
 
-    <div class="form-group">
-      <label>Country</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].country" />
-    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Country</mat-label>
+      <input matInput [(ngModel)]="studentAddresses[0].country" name="country" />
+    </mat-form-field>
 
-    <div class="form-group">
-      <label>ZIP Code</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].zipCode" />
-    </div>
-    <div class="form-group">
-      <label>Land Mark</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].landmark" />
-    </div>
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>ZIP Code</mat-label>
+      <input matInput [(ngModel)]="studentAddresses[0].zipCode" name="zipCode" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Landmark</mat-label>
+      <input matInput [(ngModel)]="studentAddresses[0].landmark" name="landmark" />
+    </mat-form-field>
   </div>
-  <button (click)="saveAddress()">Save Address</button>
+
+  <button mat-raised-button color="primary" (click)="saveAddress()">
+    {{ isEditMode ? 'Update Address' : 'Save Address' }}
+  </button>
 </div>

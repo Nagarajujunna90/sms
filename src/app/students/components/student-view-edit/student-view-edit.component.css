@@ -186,15 +186,15 @@ button:hover {
   color: #222;
 }
 
-.readonly-mode input,
+/* .readonly-mode input,
 .readonly-mode select,
 .readonly-mode textarea {
   pointer-events: none;
   border: none;
   background-color: transparent;
   color: #000;
-}
-.readonly-mode input,
+} */
+/* .readonly-mode input,
 .readonly-mode select,
 .readonly-mode textarea {
   pointer-events: none;
@@ -204,17 +204,17 @@ button:hover {
   font-weight: 500;
   padding-left: 0;
   outline: none;
-}
+} */
 
 /* Optional: visually look like plain text */
-.readonly-mode input:focus,
-.readonly-mode select:focus,
+/* .readonly-mode input:focus, */
+/* .readonly-mode select:focus,
 .readonly-mode textarea:focus {
   outline: none;
   box-shadow: none;
-}
+} */
 
-.readonly-mode input,
+/* .readonly-mode input,
 .readonly-mode select,
 .readonly-mode textarea {
   background-color: transparent;
@@ -223,4 +223,4 @@ button:hover {
   color: #000;
   font-weight: normal;
   text-overflow: ellipsis;
-}
+} */

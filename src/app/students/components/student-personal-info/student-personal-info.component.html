@@ -1,24 +1,25 @@
 <div class="card">
   <h3>Personal Info</h3>
   <div class="form-grid">
+
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>First Name</mat-label>
-      <input matInput type="text" [(ngModel)]="personalInfo.firstName" />
+      <input matInput type="text" [(ngModel)]="student.firstName" name="firstName" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Last Name</mat-label>
-      <input matInput type="text" [(ngModel)]="personalInfo.lastName" />
+      <input matInput type="text" [(ngModel)]="student.lastName" name="lastName" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>User Name</mat-label>
-      <input matInput type="text" [(ngModel)]="personalInfo.userName" />
+      <input matInput type="text" [(ngModel)]="student.userName" name="userName" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Gender</mat-label>
-      <mat-select [(ngModel)]="personalInfo.gender">
+      <mat-select [(ngModel)]="student.gender" name="gender">
         <mat-option value="Male">Male</mat-option>
         <mat-option value="Female">Female</mat-option>
       </mat-select>
@@ -26,25 +27,26 @@
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Date of Birth</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="personalInfo.dateOfBirth" />
+      <input matInput [matDatepicker]="picker" [(ngModel)]="student.dateOfBirth" name="dob" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Email</mat-label>
-      <input matInput type="email" [(ngModel)]="personalInfo.emaild" />
+      <input matInput type="email" [(ngModel)]="student.emaild" name="email" />
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Mobile Number</mat-label>
-      <input matInput type="text" [(ngModel)]="personalInfo.mobileNumber" />
+      <input matInput type="text" [(ngModel)]="student.mobileNumber" name="phoneNumber" />
     </mat-form-field>
+
   </div>
 
   <div class="text-center mt-3">
     <button mat-raised-button color="primary" (click)="savePersonalInfo()">
-      Save Personal Info
+      {{ mode === 'ADD' ? 'Add Personal Info' : 'Update Personal Info' }}
     </button>
   </div>
 </div>

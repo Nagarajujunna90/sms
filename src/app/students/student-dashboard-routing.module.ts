@@ -14,10 +14,21 @@ export const routes: Routes = [
     children: [
       //  { path: '', redirectTo: 'add', pathMatch: 'full' },
       { path: 'list', component: ViewStudentsComponent },
-      { path: 'edit/:id', component: StudentViewEditComponent,  canActivate: [AuthGuard] // 👈 Is this here?
-      },
+      { path: 'edit/:id', component: StudentViewEditComponent, canActivate: [AuthGuard] },
       { path: 'delete/:id', component: StudentDeleteComponent },
-      { path: 'add',loadChildren: () =>import('./components/student-add/student-add.module').then(m => m.StudentAddModule) }
+      {
+        path: 'update/:id',
+        loadChildren: () => import('./components/student-add/student-add.module').then(m => m.StudentAddModule)
+            },
+      // {
+      //   path: 'add/personal-info',
+      //   loadChildren: () => import('./components/student-add/student-add.module').then(m => m.StudentAddModule)
+      // } ,
+      {
+        path: 'add',
+        loadChildren: () => import('./components/student-add/student-add.module').then(m => m.StudentAddModule)
+      }
+    
     ]
   }
 ];

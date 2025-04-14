@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { Address } from '../../models/Address.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { StudentAddress } from '../../models/student-address.model';
 import { SharedModule } from '../../../shared/shared.module';
 import { StudentDataService } from '../../services/student-data.service';
 import { StudentService } from '../../services/student.service';
+import { MessageService } from '../../services/message.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { StudentResponse } from '../../models/studentResponse.model';
 
 @Component({
   selector: 'app-student-address',
@@ -13,20 +15,91 @@ import { StudentService } from '../../services/student.service';
   styleUrl: './student-address.component.css'
 })
 export class StudentAddressComponent {
-  constructor(private studentService: StudentService, private snackBar: MatSnackBar, private studentDataService: StudentDataService) { }
+  student!: StudentResponse;
+  studentAddresses: StudentAddress[] = [];
+
   studentId: number = 0;
+  isEditMode = false;
+  addressId:number= 0;
+
+  constructor(
+    private studentService: StudentService,
+    private messageService: MessageService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private studentDataService: StudentDataService
+  ) { }
+
   ngOnInit() {
+    console.log(this.isEditMode)
     this.studentDataService.getStudentId$().subscribe(id => {
       if (id) {
-        console.log('Received Student ID:', id);
+        console.log('Received Address Tab,Student ID:', id);
         this.studentId = id;
       }
     });
+  
+    this.studentDataService.getAddressId$().subscribe(id => {
+      if (id) {
+        console.log('Received Address Tab,Address ID:', id);
+        this.addressId = id;
+      }
+    });
+
+    this.studentAddresses = this.getDefaultAddress();
+    if (this.studentId && this.addressId){
+      this.studentService.getAddress(this.addressId).subscribe({
+        next: (response) => {
+          this.studentAddresses[0] = response;
+          this.isEditMode = true;
+        },
+        error: (err) => {
+          console.error('Failed to fetch address:', err);
+        }
+      });
+    }
+  
+    this.student = this.studentDataService.getStudentData();
+  
+    if (this.student && this.student.studentAddresses && this.student.studentAddresses.length > 0) {
+      this.studentAddresses = this.student.studentAddresses;
+      // ✅ Set addressId from existing data
+      this.addressId = this.studentAddresses[0].addressId;
+      this.isEditMode = true;
+    } 
+      
+  }
+  
+  
+  saveAddress() {
+    this.studentAddresses[0].studentId = this.studentId;
+    if (!this.isEditMode) {
+      this.studentService.saveAddress(this.studentAddresses[0]).subscribe({
+        next: response => {
+         this.addressId= response.addressId;
+         console.log(response.addressId)
+         console.log(this.addressId)
+         this.studentDataService.setAddressId(this.addressId);
+
+          this.messageService.show('Saved successfully!', 'success');
+        },
+        error: (err) => {
+          this.messageService.show('Something went wrong', 'error');
+        }
+      });
+    } else {
+      this.studentService.updateAddress(this.addressId, this.studentAddresses[0]).subscribe({
+        next: response => {
+          this.messageService.show('Saved successfully!', 'success');
+        },
+        error: (err) => {
+          this.messageService.show('Something went wrong', 'error');
+        }
+      });
+    }
   }
 
-  studentAddresses: Address[] = this.getDefaultAddress();
-
-  getDefaultAddress(): Address[] {
+  getDefaultAddress(): StudentAddress[] {
     return [
       {
         addressId: 0,
@@ -36,33 +109,11 @@ export class StudentAddressComponent {
         state: '',
         country: '',
         zipCode: '',
-        addressType: '',
+        addressType: 'Permanent',
         landmark: '',
         studentId: 0
       }
     ];
   }
-  
-  saveAddress() {
-    this.studentAddresses[0].studentId = this.studentId;
 
-    console.log(this.studentAddresses)
-    this.studentService.saveAddress(this.studentAddresses[0]).subscribe({
-      next: response => {
-        this.showMessage('Address Saved Successfully!', 'success')
-      },
-      error: (err) => this.showMessage(err.error?.errorMessage || 'Failed to save address!', 'error')
-    });
-  }
-  successMessage: string = '';
-  errorMessage: string = '';
-
-  showMessage(message: string, type: 'success' | 'error') {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      panelClass: type === 'success' ? 'snackbar-success' : 'snackbar-error',
-      verticalPosition: 'top',
-      horizontalPosition: 'center'
-    });
-  }
 }

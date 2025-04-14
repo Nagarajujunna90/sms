@@ -1,12 +1,13 @@
 
-export interface ParentGuardian {
+export interface StudentParentGardians {
     guardianId:number;
     name: string;
     qualification: string;
-    profession: string;
+    occupation: string;
     phoneNumber: string;
     email: string;
     age:number;
     relationType: 'Father' | 'Mother' | 'Guardian';
+    studentId:number;
   }
   

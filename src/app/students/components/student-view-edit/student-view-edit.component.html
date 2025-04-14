@@ -8,7 +8,7 @@
       <div class="class-info">
         <div class="info-item">
           <span class="label">Class:</span>
-          <span class="value">{{ student.studentGrade.classGrade }}</span>
+          <span class="value">{{ student.studentGrade.grade }}</span>
         </div>
         <div class="info-item">
           <span class="label">Section:</span>
@@ -57,13 +57,13 @@
         <input type="text" [(ngModel)]="student.phoneNumber" />
       </div>
     </div>
-    <button [routerLink]="['/edit', student.studentId]">Edit</button>
+    <button (click)="viewAndUpdateStudent(student.studentId)">Edit</button>
   </div>
 
   <!-- Parent / Guardian Info -->
   <div class="card">
     <h3>Parent / Guardian Info</h3>
-    <table mat-table [dataSource]="student.studentParentGuardians" class="mat-elevation-z8">
+    <table mat-table [dataSource]="studentParentGuardians" class="mat-elevation-z8">
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Name</th>
         <td mat-cell *matCellDef="let parent">{{ parent.name }}</td>
@@ -95,15 +95,15 @@
     <div class="form-grid">
       <div class="form-group">
         <label>Academic Year</label>
-        <input type="text" [(ngModel)]="student.studentGrade.academicYear" />
+        <input type="text" [(ngModel)]="studentGrade.academicYear" />
       </div>
       <div class="form-group">
         <label>Section</label>
-        <input type="text" [(ngModel)]="student.studentGrade.section" />
+        <input type="text" [(ngModel)]="studentGrade.section" />
       </div>
       <div class="form-group">
         <label>Roll Number</label>
-        <input type="text" [(ngModel)]="student.studentGrade.rollNumber" />
+        <input type="text" [(ngModel)]="studentGrade.rollNumber" />
       </div>
     </div>
   </div>
@@ -111,7 +111,7 @@
   <!-- Previous Academic Info -->
   <div class="card">
     <h3>Previous Academic Info</h3>
-    <table mat-table [dataSource]="student.studentPreviousAcademicDetails" class="mat-elevation-z8">
+    <table mat-table [dataSource]="studentPreviousAcademicDetails" class="mat-elevation-z8">
       <ng-container matColumnDef="schoolName">
         <th mat-header-cell *matHeaderCellDef>School Name</th>
         <td mat-cell *matCellDef="let edu">{{ edu.schoolName }}</td>
@@ -139,7 +139,7 @@
   <div class="form-grid">
     <div class="form-group">
       <label>Address Type</label>
-      <select [(ngModel)]="student.studentAddresses[0].addressType">
+      <select [(ngModel)]="studentAddresses[0].addressType">
         <option value="permanent">Permanent</option>
         <option value="present">Present</option>
       </select>
@@ -147,35 +147,34 @@
 
     <div class="form-group">
       <label>House Number</label>
-      <input type="text" [(ngModel)]="student.studentAddresses[0].houseNumber" />
+      <input type="text" [(ngModel)]="studentAddresses[0].houseNumber" />
     </div>
 
     <div class="form-group">
       <label>Area</label>
-      <input type="text" [(ngModel)]="student.studentAddresses[0].area" />
+      <input type="text" [(ngModel)]="studentAddresses[0].area" />
     </div>
 
     <div class="form-group">
       <label>City</label>
-      <input type="text" [(ngModel)]="student.studentAddresses[0].city" />
+      <input type="text" [(ngModel)]="studentAddresses[0].city" />
     </div>
 
     <div class="form-group">
       <label>State</label>
-      <input type="text" [(ngModel)]="student.studentAddresses[0].state" />
+      <input type="text" [(ngModel)]="studentAddresses[0].state" />
     </div>
 
     <div class="form-group">
       <label>Country</label>
-      <input type="text" [(ngModel)]="student.studentAddresses[0].country" />
+      <input type="text" [(ngModel)]="studentAddresses[0].country" />
     </div>
 
     <div class="form-group">
       <label>ZIP Code</label>
-      <input type="text" [(ngModel)]="student.studentAddresses[0].zipCode" />
+      <input type="text" [(ngModel)]="studentAddresses[0].zipCode" />
     </div>
   </div>
-  <button (click)="saveAddress()">Save Address</button>
 </div>
 
   <!-- Demographic Info
@@ -207,11 +206,11 @@
     <div class="form-grid">
       <div class="form-group">
         <label>Route Number</label>
-        <input type="text" [(ngModel)]="student.transport.busRouteNumber" />
+        <input type="text" [(ngModel)]="studentTransport.busRouteNumber" />
       </div>
       <div class="form-group">
         <label>Pickup Point</label>
-        <input type="text" [(ngModel)]="student.transport.pickupPoint" />
+        <input type="text" [(ngModel)]="studentTransport.pickupPoint" />
       </div>
     </div>
   </div>
@@ -222,11 +221,11 @@
     <div class="form-grid">
       <div class="form-group">
         <label>Fee Paid</label>
-        <input type="text" [(ngModel)]="student.feeDetails.feePaid" />
+        <input type="text" [(ngModel)]="studentFeeDetails.feePaid" />
       </div>
       <div class="form-group">
         <label>Due Amount</label>
-        <input type="text" [(ngModel)]="student.feeDetails.dueDates" />
+        <input type="text" [(ngModel)]="studentFeeDetails.dueDates" />
       </div>
     </div>
   </div>
@@ -237,11 +236,11 @@
     <div class="form-grid">
       <div class="form-group">
         <label>Total Days</label>
-        <input type="text" [(ngModel)]="student.attendance.totalWorkingDays" />
+        <input type="text" [(ngModel)]="studentAttendance.totalWorkingDays" />
       </div>
       <div class="form-group">
         <label>Days Present</label>
-        <input type="text" [(ngModel)]="student.attendance.daysPresent" />
+        <input type="text" [(ngModel)]="studentAttendance.daysPresent" />
       </div>
     </div>
   </div>
@@ -252,11 +251,11 @@
     <div class="form-grid">
       <div class="form-group">
         <label>Birth Certificate</label>
-        <input type="text" [(ngModel)]="student.documents[0].documentType" />
+        <input type="text" [(ngModel)]="studentDocuments[0].documentType" />
       </div>
       <div class="form-group">
         <label>Aadhaar</label>
-        <input type="text" [(ngModel)]="student.documents[0].documentNumber" />
+        <input type="text" [(ngModel)]="studentDocuments[0].documentNumber" />
       </div>
     </div>
   </div>

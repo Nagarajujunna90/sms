@@ -1,84 +1,117 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Address } from 'cluster';
-import { PreviousEducationDetails } from '../models/previous-ecucation.model';
-import { Student } from '../models/student.model';
-import { ParentGuardian } from '../models/parent-guardian.models';
+import { Student } from '../models/student-personal-info.model';
+import { StudentAddress } from '../models/student-address.model';
+import { StudentParentGardians } from '../models/student-parent-guardians.models';
+import { StudentPreviousAcademicDetails } from '../models/student-previous-academic.model';
+import { StudentGrade } from '../models/student-current-academic.model';
+import { StudentResponse } from '../models/studentResponse.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
   
-  
-  private apiUrl = 'http://localhost:6063/ems/v1/personal/student'; // Update API endpoint
+  private baseUrl = 'http://localhost:6063/ems/v1';
 
   constructor(private http: HttpClient) {}
 
-  savePersonalInfo(student: Student): Observable<Student> {
-    return this.http.post<Student>(this.apiUrl, student, { headers: this.getHeaders() });
-  }
-
-
- // 🔹 Save Address
- saveAddress(address: any): Observable<Address> {
-  return this.http.post<Address>('http://localhost:6063/ems/v1/student/addresses', address,{ headers: this.getHeaders() });
-}
-
-saveParentInfo(parentGuardian: any):Observable<ParentGuardian> {
-  return this.http.post<ParentGuardian>('http://localhost:6063/ems/v1/student/parent-guardians', parentGuardian,{ headers: this.getHeaders() });
-}
-
-// 🔹 Save Grade Details
-saveGradeDetails(data: any): Observable<any> {
-  return this.http.post('http://localhost:6063/ems/v1/student/grade', data,{ headers: this.getHeaders() });
-}
-
-savePreviousEducation(data: PreviousEducationDetails) {
-  return this.http.post('http://localhost:6063/ems/v1/student/academic', data); // adjust endpoint
-}
-
-
- private getHeaders() {
-    const token = localStorage.getItem('authToken'); // ✅ Get token from local storage
-    console.log(token)
-    const headers = new HttpHeaders({
+  // 🔐 Common Headers
+  private getHeaders() {
+    const token = localStorage.getItem('authToken');
+    return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // 
+      'Authorization': `Bearer ${token}`
     });
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-   
   }
 
-  updateStudent(id: number, student: Student): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}`, student, { headers: this.getHeaders()});
-  }
-  getStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(this.apiUrl+'/students', { headers: this.getHeaders() });
+  // 📌 PERSONAL INFO
+  savePersonalInfo(data: Student): Observable<Student> {
+    return this.http.post<Student>(`${this.baseUrl}/personal/student`, data, { headers: this.getHeaders() });
   }
 
   getStudentById(id: number): Observable<Student> {
-    return this.http.get<Student>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+    return this.http.get<Student>(`${this.baseUrl}/personal/student/${id}`, { headers: this.getHeaders() });
+  }
+
+  updateStudent(id: number, student: Student): Observable<Student> {
+    return this.http.put<Student>(`${this.baseUrl}/personal/student/${id}`, student, { headers: this.getHeaders() });
+  }
+
+  getStudentResponseById(id: number): Observable<StudentResponse> {
+    return this.http.get<StudentResponse>(`${this.baseUrl}/personal/student/${id}`, { headers: this.getHeaders() });
+  }
+
+  getStudents(): Observable<Student[]> {
+    return this.http.get<Student[]>(`${this.baseUrl}/personal/student/students`, { headers: this.getHeaders() });
   }
 
   deleteStudent(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+    return this.http.delete<void>(`${this.baseUrl}/personal/student/${id}`, { headers: this.getHeaders() });
   }
-  
+
   getStudentsByFilter(filters: any): Observable<any[]> {
     let params = new HttpParams();
-  
     Object.keys(filters).forEach(key => {
       if (filters[key]) {
         params = params.set(key, filters[key]);
       }
     });
-  
-    return this.http.get<any[]>('http://localhost:6063/ems/v1/student/search', {
-      headers: this.getHeaders(),
-      params
-    });
+    return this.http.get<any[]>(`${this.baseUrl}/student/search`, { headers: this.getHeaders(), params });
   }
-  
+
+  // 🏠 ADDRESS
+  saveAddress(data: StudentAddress): Observable<StudentAddress> {
+    return this.http.post<StudentAddress>(`${this.baseUrl}/student/addresses`, data, { headers: this.getHeaders() });
+  }
+
+  getAddress(studentId: number): Observable<StudentAddress> {
+    return this.http.get<StudentAddress>(`${this.baseUrl}/student/addresses/${studentId}`, { headers: this.getHeaders() });
+  }
+
+  updateAddress(studentId: number, address: StudentAddress): Observable<StudentAddress> {
+    return this.http.put<StudentAddress>(`${this.baseUrl}/student/addresses/${studentId}`, address, { headers: this.getHeaders() });
+  }
+
+  // 🎓 GRADE
+  saveGrade(data: StudentGrade): Observable<StudentGrade> {
+    return this.http.post<StudentGrade>(`${this.baseUrl}/student/grade`, data, { headers: this.getHeaders() });
+  }
+
+  getGrade(studentId: number): Observable<StudentGrade> {
+    return this.http.get<StudentGrade>(`${this.baseUrl}/student/grade/${studentId}`, { headers: this.getHeaders() });
+  }
+
+  // 👨‍👩‍👧‍👦 PARENT INFO (Supports multiple entries)
+  saveParentInfo(data: StudentParentGardians): Observable<StudentParentGardians> {
+    return this.http.post<StudentParentGardians>(`${this.baseUrl}/student/parent-guardians`, data, { headers: this.getHeaders() });
+  }
+
+  getParentInfo(studentId: number): Observable<StudentParentGardians> {
+    return this.http.get<StudentParentGardians>(`${this.baseUrl}/student/parent-guardians/${studentId}`, { headers: this.getHeaders() });
+  }
+
+  getAllParentGuardiansById(id: number): Observable<StudentParentGardians[]> {
+    return this.http.get<StudentParentGardians[]>(`${this.baseUrl}/student/parent-guardians/student/${id}`, { headers: this.getHeaders() });  
+
+  }
+deleteParentGuardian(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/student/parent-guardians/${id}`, { headers: this.getHeaders() });    
+  }
+
+  // 📚 PREVIOUS EDUCATION
+  savePreviousEducation(data: StudentPreviousAcademicDetails): Observable<StudentPreviousAcademicDetails> {
+    return this.http.post<StudentPreviousAcademicDetails>(`${this.baseUrl}/student/academic`, data, { headers: this.getHeaders() });
+  }
+
+  getPreviousEducation(educationId: number): Observable<StudentPreviousAcademicDetails> {
+    return this.http.get<StudentPreviousAcademicDetails>(`${this.baseUrl}/student/academic/${educationId}`, { headers: this.getHeaders() });
+  }
+  getAllPreviousEducations(studentId: number): Observable<StudentPreviousAcademicDetails[]> {
+    return this.http.get<StudentPreviousAcademicDetails[]>(`${this.baseUrl}/student/academic/student/${studentId}`, { headers: this.getHeaders() });
+  }
+  deletePreviousEducation(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/student/academic/${id}`, { headers: this.getHeaders() });
+  }
 }

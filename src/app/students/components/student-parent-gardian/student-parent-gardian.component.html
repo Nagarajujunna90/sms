@@ -1,64 +1,59 @@
-<!-- Parent / Guardian Info -->
-<div class="card">
-  <h3>Parent / Guardian Info</h3>
+<table class="table table-bordered" style="width: 100%; margin-bottom: 10px;">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Relation</th>
+      <th>Mobile</th>
+      <th>Email</th>
+      <th>Occupation</th>
+      <th>Qualification</th>
+      <th>Age</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let parent of parentGuardians; let i = index">
+      <ng-container *ngIf="editIndex === i; else viewMode">
+        <td><input type="text" [(ngModel)]="parent.name" /></td>
+        <td>
+          <select [(ngModel)]="parent.relationType">
+            <option value="">Select</option>
+            <option value="Father">Father</option>
+            <option value="Mother">Mother</option>
+            <option value="Guardian">Guardian</option>
+          </select>
+        </td>
+        <td><input type="text" [(ngModel)]="parent.phoneNumber" /></td>
+        <td><input type="email" [(ngModel)]="parent.email" /></td>
+        <td><input type="text" [(ngModel)]="parent.occupation" /></td>
+        <td><input type="text" [(ngModel)]="parent.qualification" /></td>
+        <td><input type="number" [(ngModel)]="parent.age" /></td>
+        <td>
+          <button mat-button color="primary" (click)="saveParentGuardian(parent)">Save</button>
+          <button mat-button color="warn" (click)="cancelEdit()">Cancel</button>
+        </td>
+      </ng-container>
 
-  <div *ngFor="let parent of studentParentGuardians; let i = index" class="form-grid">
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Name</mat-label>
-      <input matInput [(ngModel)]="parent.name" placeholder="Enter name" />
-    </mat-form-field>
+      <ng-template #viewMode>
+        <td>{{ parent.name }}</td>
+        <td>{{ parent.relationType }}</td>
+        <td>{{ parent.phoneNumber }}</td>
+        <td>{{ parent.email }}</td>
+        <td>{{ parent.occupation }}</td>
+        <td>{{ parent.qualification }}</td>
+        <td>{{ parent.age }}</td>
+        <td>
+          <button mat-icon-button color="primary" (click)="editEntry(i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteEntry(parent.guardianId)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
 
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Mobile Number</mat-label>
-      <input matInput [(ngModel)]="parent.mobileNumber" placeholder="Enter mobile" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Occupation</mat-label>
-      <input matInput [(ngModel)]="parent.occupation" placeholder="Enter profession" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Qualification</mat-label>
-      <input matInput [(ngModel)]="parent.qualification" placeholder="Enter qualification" />
-    </mat-form-field>
-    
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Email</mat-label>
-      <input matInput [(ngModel)]="parent.email" placeholder="Enter email" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Age</mat-label>
-      <input matInput [(ngModel)]="parent.age" placeholder="Enter age" />
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="form-field">
-      <mat-label>Relation</mat-label>
-      <mat-select [(ngModel)]="parent.relationType">
-        <mat-option value="Father">Father</mat-option>
-        <mat-option value="Mother">Mother</mat-option>
-        <mat-option value="Guardian">Guardian</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <div style="display: flex; align-items: center;">
-      <button
-        *ngIf="studentParentGuardians.length > 1"
-        mat-icon-button
-        color="warn"
-        (click)="removeGuardian(i)"
-        aria-label="Remove Parent"
-      >
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-
-    <mat-divider class="divider" *ngIf="i < studentParentGuardians.length - 1"></mat-divider>
-  </div>
-
-  <div class="action-buttons">
-    <button mat-raised-button color="primary" (click)="addGuardian()">+ Add Parent/Guardian</button>
-    <button mat-raised-button color="accent" (click)="saveGuardians()">Save</button>
-  </div>
-</div>
+<!-- Add Another Button -->
+<button mat-stroked-button color="accent" (click)="addNewEntry()">+ Add Another</button>

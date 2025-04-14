@@ -1,127 +1,66 @@
-<div class="form-container">
-  <h3>Previous Education Details</h3>
+<table class="table table-bordered" style="width: 100%; margin-bottom: 10px;">
+  <thead>
+    <tr>
+      <th>Academic Year</th>
+      <th>Class / Section</th>
+      <th>Roll No.</th>
+      <th>Medium</th>
+      <th>Status</th>
+      <th>Marks (%)</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let edu of previousEducations; let i = index">
+      <ng-container *ngIf="editIndex === i; else viewMode">
+        <td>
+          <select [(ngModel)]="edu.academicYear">
+            <option value="">Select</option>
+            <option *ngFor="let year of academicYears" [value]="year">{{ year }}</option>
+          </select>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="edu.grade" placeholder="Class" style="width: 45%" />
+          /
+          <input type="text" [(ngModel)]="edu.section" placeholder="Section" style="width: 45%" />
+        </td>
+        <td><input type="number" [(ngModel)]="edu.rollNumber" /></td>
+        <td><input type="text" [(ngModel)]="edu.medium" /></td>
+        <td><input type="text" [(ngModel)]="edu.studentStatus" /></td>
+        <td>
+          <input type="number" [(ngModel)]="edu.marks" (change)="calculatePercentage(edu)" style="width: 45%" />
+          /
+          <input type="number" [(ngModel)]="edu.totalMarks" (change)="calculatePercentage(edu)" style="width: 45%" />
+          <span *ngIf="edu.percentage">({{ edu.percentage }}%)</span>
+        </td>
+        <td>
+          <button mat-button color="primary" (click)="savePreviousEducation(edu)">Save</button>
+          <button mat-button color="warn" (click)="cancelEdit()">Cancel</button>
+        </td>
+      </ng-container>
 
-  <div *ngFor="let edu of previousEducations; let i = index" class="education-entry">
-    <mat-card class="mb-3">
-      <div class="row">
-        <!-- School Name -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>School Name</mat-label>
-            <input matInput [(ngModel)]="edu.schoolName" name="schoolName{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- School Address -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>School Address</mat-label>
-            <textarea matInput [(ngModel)]="edu.schoolAddress" name="schoolAddress{{i}}"></textarea>
-          </mat-form-field>
-        </div>
-
-        <!-- Board -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Board</mat-label>
-            <input matInput [(ngModel)]="edu.board" name="board{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Class Grade -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Class Grade</mat-label>
-            <input matInput [(ngModel)]="edu.grade" name="grade{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Section -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Section</mat-label>
-            <input matInput [(ngModel)]="edu.section" name="section{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Roll Number -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Roll Number</mat-label>
-            <input matInput [(ngModel)]="edu.rollNumber" name="rollNumber{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Medium -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Medium</mat-label>
-            <input matInput [(ngModel)]="edu.medium" name="medium{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Student Status -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Student Status</mat-label>
-            <input matInput [(ngModel)]="edu.studentStatus" name="studentStatus{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Marks Obtained -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Marks Obtained</mat-label>
-            <input matInput type="number" [(ngModel)]="edu.marks" (blur)="calculatePercentage(edu)" name="marks{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Total Marks -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Total Marks</mat-label>
-            <input matInput type="number" [(ngModel)]="edu.totalMarks" (blur)="calculatePercentage(edu)" name="totalMarks{{i}}">
-          </mat-form-field>
-        </div>
-
-        <!-- Percentage -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Percentage</mat-label>
-            <input matInput type="number" [value]="edu.percentage" readonly>
-          </mat-form-field>
-        </div>
-
-        <!-- Academic Year -->
-        <div class="col-md-4">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Academic Year</mat-label>
-            <mat-select [(ngModel)]="edu.academicYear">
-              <mat-option *ngFor="let year of academicYears" [value]="year">
-                {{ year }}
-              </mat-option>
-            </mat-select>
-        </mat-form-field>
-        </div>
-
-        
-        <!-- Remove Button -->
-        <div class="col-md-2 mt-2">
-          <button mat-icon-button color="warn" (click)="removeEntry(i)" *ngIf="previousEducations.length > 1">
+      <ng-template #viewMode>
+        <td>{{ edu.academicYear }}</td>
+        <td>{{ edu.grade }} / {{ edu.section }}</td>
+        <td>{{ edu.rollNumber }}</td>
+        <td>{{ edu.medium }}</td>
+        <td>{{ edu.studentStatus }}</td>
+        <td>
+          {{ edu.marks }}/{{ edu.totalMarks }}
+          <span *ngIf="edu.percentage">({{ edu.percentage }}%)</span>
+        </td>
+        <td>
+          <button mat-icon-button color="primary" (click)="editEntry(i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteEntry(edu.id)">
             <mat-icon>delete</mat-icon>
           </button>
-        </div>
-      </div>
-    </mat-card>
-  </div>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>
 
-  <!-- Add Another Entry -->
-  <div class="mb-3">
-    <button mat-stroked-button color="primary" (click)="addNewEntry()">+ Add Another</button>
-  </div>
-
-  <!-- Save Button -->
-  <div>
-    <button mat-raised-button color="primary" (click)="savePreviousEducation()">Save</button>
-  </div>
-</div>
+<!-- ✅ Add New Button -->
+<button mat-stroked-button color="accent" (click)="addNewEntry()">+ Add Another</button>

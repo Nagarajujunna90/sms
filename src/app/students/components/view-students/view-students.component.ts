@@ -15,7 +15,10 @@ export class ViewStudentsComponent implements OnInit {
   searchForm!: FormGroup;
   students: any[] = [];
 
-  constructor(private fb: FormBuilder, private studentService: StudentService,private router:Router) {}
+  constructor(
+     private fb: FormBuilder,
+     private studentService: StudentService,
+     private router:Router) {}
 
   ngOnInit(): void {
     this.searchForm = this.fb.group({

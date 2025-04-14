@@ -6,6 +6,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgFor } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MaterialModule } from './material.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -13,7 +15,8 @@ import { MaterialModule } from './material.module';
     RouterModule,
     NgFor,
     MatTabsModule,
-    MaterialModule
+    MaterialModule,
+    MatSnackBarModule
   ],
   exports: [
     CommonModule,

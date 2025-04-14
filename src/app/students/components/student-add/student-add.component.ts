@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
 import { StudentService } from '../../services/student.service';
+import { filter } from 'rxjs';
 
 
 @Component({
@@ -13,17 +14,33 @@ import { StudentService } from '../../services/student.service';
   styleUrls: ['./student-add.component.css']
 })
 export class StudentAddComponent implements OnInit {
-  
+
   constructor(
     private studentService: StudentService,
     private snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute
   ) { }
-  
-  tabRoutes = ['personal-info','parent-guardian', 'address', 'academic', 'previous-education', 'reports'];
-  selectedTab: number = 0;  // Initialize with first tab selected
+
+  selectedTab: number = 0;
   previousTab: number = 0; // to track last tab
+  tabRoutes = ['personal-info', 'parent-guardian', 'address', 'academic', 'previous-education', 'reports'];
+
+
+  ngOnInit(): void {
+    this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      const activeTab = this.route.firstChild?.snapshot.url[0]?.path;
+      const index = this.tabRoutes.indexOf(activeTab ?? '');
+      this.selectedTab = index !== -1 ? index : 0;
+      // Navigate to default tab if none selected
+      if (!activeTab) {
+        this.router.navigate(['personal-info'], { relativeTo: this.route });
+      }
+    });
+      
+  }
 
   onTabChange(index: number): void {
     console.log('Tab changed to index:', index);
@@ -54,16 +71,5 @@ export class StudentAddComponent implements OnInit {
     this.router.navigate([selectedRoute], { relativeTo: this.route });
 
   }
-
-  successMessage: string = '';
-  errorMessage: string = '';
-  ngOnInit(): void {
-    const activeTab = this.route.firstChild?.snapshot.url[0]?.path;
-    const index = this.tabRoutes.indexOf(activeTab ?? '');
-    this.selectedTab = index !== -1 ? index : 0;
-  }
-  // onTabChange(index: number): void {
-  //   this.selectedTab = index;
-  // }
 
 }

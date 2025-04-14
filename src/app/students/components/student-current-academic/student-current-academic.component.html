@@ -1,15 +1,8 @@
 <div class="form-container">
-  <h3>Grade & Academic</h3>
+  <h3>{{ isEditMode ? 'Update Grade & Academic Info' : 'Add Grade & Academic Info' }}</h3>
 
   <div class="row">
-    <div class="col-md-4">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Grade</mat-label>
-        <mat-select [(ngModel)]="gradeDetails.grade">
-          <mat-option *ngFor="let g of grades" [value]="g">{{ g }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+    
 
     <div class="col-md-4">
       <mat-form-field appearance="outline" class="full-width">
@@ -37,14 +30,30 @@
         </mat-select>
       </mat-form-field>
     </div>
+    <div class="col-md-4">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Grade</mat-label>
+        <!-- <mat-select [(ngModel)]="gradeDetails.grade">
+          <mat-option *ngFor="let grade of grades" [value]="grade">
+            {{ grade }}
+          </mat-option>
+        </mat-select> -->
 
+        <mat-select [(ngModel)]="gradeDetails.grade">
+          <mat-option *ngFor="let grade of grades" [value]="grade">
+            {{ grade }}
+          </mat-option>s
+        </mat-select>
+
+      </mat-form-field>
+    </div>
     <div class="col-md-6">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Student Status</mat-label>
         <mat-select [(ngModel)]="gradeDetails.studentStatus">
-          <mat-option value="">Select</mat-option>
-          <mat-option value="Active">Active</mat-option>
-          <mat-option value="InActive">InActive</mat-option>
+          <mat-option *ngFor="let studentStatus of studentStatuses" [value]="studentStatus">
+            {{ studentStatus }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
@@ -52,7 +61,9 @@
 
   <div class="row text-center">
     <div class="col-12">
-      <button mat-raised-button color="primary" (click)="saveGrade()">Save Grade</button>
+      <button mat-raised-button color="primary" (click)="saveGrade()">
+        {{ gradeDetails.gradeId ? 'Update Grade' : 'Save Grade' }}
+      </button>
     </div>
   </div>
 </div>
