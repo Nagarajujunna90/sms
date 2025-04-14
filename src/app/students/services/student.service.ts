@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Student } from '../models/student-personal-info.model';
+import { StudentPersonalInfo } from '../models/student-personal-info.model';
 import { StudentAddress } from '../models/student-address.model';
 import { StudentParentGardians } from '../models/student-parent-guardians.models';
 import { StudentPreviousAcademicDetails } from '../models/student-previous-academic.model';
@@ -27,24 +27,24 @@ export class StudentService {
   }
 
   // 📌 PERSONAL INFO
-  savePersonalInfo(data: Student): Observable<Student> {
-    return this.http.post<Student>(`${this.baseUrl}/personal/student`, data, { headers: this.getHeaders() });
+  savePersonalInfo(data: StudentPersonalInfo): Observable<StudentPersonalInfo> {
+    return this.http.post<StudentPersonalInfo>(`${this.baseUrl}/personal/student`, data, { headers: this.getHeaders() });
   }
 
-  getStudentById(id: number): Observable<Student> {
-    return this.http.get<Student>(`${this.baseUrl}/personal/student/${id}`, { headers: this.getHeaders() });
+  getStudentById(id: number): Observable<StudentPersonalInfo> {
+    return this.http.get<StudentPersonalInfo>(`${this.baseUrl}/personal/student/${id}`, { headers: this.getHeaders() });
   }
 
-  updateStudent(id: number, student: Student): Observable<Student> {
-    return this.http.put<Student>(`${this.baseUrl}/personal/student/${id}`, student, { headers: this.getHeaders() });
+  updateStudent(id: number, student: StudentPersonalInfo): Observable<StudentPersonalInfo> {
+    return this.http.put<StudentPersonalInfo>(`${this.baseUrl}/personal/student/${id}`, student, { headers: this.getHeaders() });
   }
 
   getStudentResponseById(id: number): Observable<StudentResponse> {
     return this.http.get<StudentResponse>(`${this.baseUrl}/personal/student/${id}`, { headers: this.getHeaders() });
   }
 
-  getStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(`${this.baseUrl}/personal/student/students`, { headers: this.getHeaders() });
+  getStudents(): Observable<StudentPersonalInfo[]> {
+    return this.http.get<StudentPersonalInfo[]>(`${this.baseUrl}/personal/student/students`, { headers: this.getHeaders() });
   }
 
   deleteStudent(id: number): Observable<void> {

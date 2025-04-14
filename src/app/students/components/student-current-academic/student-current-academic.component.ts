@@ -116,4 +116,10 @@ export class StudentAcademicDetailsComponent {
       });
     }
   }
+  clearForm() {
+    this.gradeDetails = this.getDefaultAcademicDetails();
+    this.gradeDetails.studentId = this.studentId; // Keep studentId if already set
+    this.isEditMode = false;
+  }
+  
 }

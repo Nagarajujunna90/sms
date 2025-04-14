@@ -2,7 +2,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Student } from '../models/student-personal-info.model';
+import { StudentPersonalInfo } from '../models/student-personal-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +17,8 @@ export class StudentDataService {
   constructor(private http: HttpClient) {}
   private apiUrl = 'http://localhost:6063/ems/v1/personal/student'; // Update API endpoint
 
-   getStudentById(id: number): Observable<Student> {
-     return this.http.get<Student>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+   getStudentById(id: number): Observable<StudentPersonalInfo> {
+     return this.http.get<StudentPersonalInfo>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
    }
    private getHeaders() {
     const token = localStorage.getItem('authToken'); // ✅ Get token from local storage

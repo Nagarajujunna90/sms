@@ -1,69 +1,59 @@
-<div class="form-container">
-  <h3>{{ isEditMode ? 'Update Grade & Academic Info' : 'Add Grade & Academic Info' }}</h3>
+<form #gradeForm="ngForm" novalidate>
+  <div class="card">
+    <h3>{{ isEditMode ? 'Update Grade & Academic Info' : 'Add Grade & Academic Info' }}</h3>
+    <div class="form-grid">
 
-  <div class="row">
-    
-
-    <div class="col-md-4">
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- Section -->
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Section</mat-label>
-        <input matInput type="text" [(ngModel)]="gradeDetails.section" required>
+        <input matInput type="text" [(ngModel)]="gradeDetails.section" name="section" required>
+        <mat-error *ngIf="gradeForm.submitted && !gradeDetails.section">Section is required</mat-error>
       </mat-form-field>
-    </div>
 
-    <div class="col-md-4">
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- Roll Number -->
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Roll Number</mat-label>
-        <input matInput type="text" [(ngModel)]="gradeDetails.rollNumber" required>
+        <input matInput type="number" [(ngModel)]="gradeDetails.rollNumber" name="rollNumber" required>
+        <mat-error *ngIf="gradeForm.submitted && !gradeDetails.rollNumber">Roll Number is required</mat-error>
       </mat-form-field>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
+      <!-- Academic Year -->
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Academic Year</mat-label>
-        <mat-select [(ngModel)]="gradeDetails.academicYear">
-          <mat-option *ngFor="let year of academicYears" [value]="year">
-            {{ year }}
-          </mat-option>
+        <mat-select [(ngModel)]="gradeDetails.academicYear" name="academicYear" required>
+          <mat-option *ngFor="let year of academicYears" [value]="year">{{ year }}</mat-option>
         </mat-select>
+        <mat-error *ngIf="gradeForm.submitted && !gradeDetails.academicYear">Academic Year is required</mat-error>
       </mat-form-field>
-    </div>
-    <div class="col-md-4">
-      <mat-form-field appearance="outline" class="full-width">
+
+      <!-- Grade -->
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Grade</mat-label>
-        <!-- <mat-select [(ngModel)]="gradeDetails.grade">
-          <mat-option *ngFor="let grade of grades" [value]="grade">
-            {{ grade }}
-          </mat-option>
-        </mat-select> -->
-
-        <mat-select [(ngModel)]="gradeDetails.grade">
-          <mat-option *ngFor="let grade of grades" [value]="grade">
-            {{ grade }}
-          </mat-option>s
+        <mat-select [(ngModel)]="gradeDetails.grade" name="grade" required>
+          <mat-option *ngFor="let grade of grades" [value]="grade">{{ grade }}</mat-option>
         </mat-select>
-
+        <mat-error *ngIf="gradeForm.submitted && !gradeDetails.grade">Grade is required</mat-error>
       </mat-form-field>
-    </div>
-    <div class="col-md-6">
-      <mat-form-field appearance="outline" class="full-width">
+
+      <!-- Student Status -->
+      <mat-form-field appearance="outline" class="form-field">
         <mat-label>Student Status</mat-label>
-        <mat-select [(ngModel)]="gradeDetails.studentStatus">
-          <mat-option *ngFor="let studentStatus of studentStatuses" [value]="studentStatus">
-            {{ studentStatus }}
-          </mat-option>
+        <mat-select [(ngModel)]="gradeDetails.studentStatus" name="studentStatus" required>
+          <mat-option *ngFor="let studentStatus of studentStatuses" [value]="studentStatus">{{ studentStatus }}</mat-option>
         </mat-select>
+        <mat-error *ngIf="gradeForm.submitted && !gradeDetails.studentStatus">Status is required</mat-error>
       </mat-form-field>
-    </div>
-  </div>
 
-  <div class="row text-center">
-    <div class="col-12">
-      <button mat-raised-button color="primary" (click)="saveGrade()">
-        {{ gradeDetails.gradeId ? 'Update Grade' : 'Save Grade' }}
-      </button>
     </div>
+
+    <!-- Save & Clear Buttons -->
+    <button mat-raised-button color="primary" (click)="gradeForm.form.valid && saveGrade()" [disabled]="!gradeForm.form.valid">
+      {{ gradeDetails.gradeId ? 'Update Grade' : 'Save Grade' }}
+    </button>
+
+    <button mat-raised-button color="warn" (click)="clearForm()">
+      Clear
+    </button>
+
   </div>
-</div>
+</form>

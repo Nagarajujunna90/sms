@@ -14,28 +14,29 @@
     <tr *ngFor="let edu of previousEducations; let i = index">
       <ng-container *ngIf="editIndex === i; else viewMode">
         <td>
-          <select [(ngModel)]="edu.academicYear">
+          <select [(ngModel)]="edu.academicYear" required>
             <option value="">Select</option>
             <option *ngFor="let year of academicYears" [value]="year">{{ year }}</option>
           </select>
         </td>
         <td>
-          <input type="text" [(ngModel)]="edu.grade" placeholder="Class" style="width: 45%" />
+          <input type="text" [(ngModel)]="edu.grade" placeholder="Class" style="width: 45%" required />
           /
-          <input type="text" [(ngModel)]="edu.section" placeholder="Section" style="width: 45%" />
+          <input type="text" [(ngModel)]="edu.section" placeholder="Section" style="width: 45%" required />
         </td>
-        <td><input type="number" [(ngModel)]="edu.rollNumber" /></td>
-        <td><input type="text" [(ngModel)]="edu.medium" /></td>
-        <td><input type="text" [(ngModel)]="edu.studentStatus" /></td>
+        <td><input type="number" [(ngModel)]="edu.rollNumber" required /></td>
+        <td><input type="text" [(ngModel)]="edu.medium" required /></td>
+        <td><input type="text" [(ngModel)]="edu.studentStatus" required /></td>
         <td>
-          <input type="number" [(ngModel)]="edu.marks" (change)="calculatePercentage(edu)" style="width: 45%" />
+          <input type="number" [(ngModel)]="edu.marks" (change)="calculatePercentage(edu)" style="width: 45%" required />
           /
-          <input type="number" [(ngModel)]="edu.totalMarks" (change)="calculatePercentage(edu)" style="width: 45%" />
+          <input type="number" [(ngModel)]="edu.totalMarks" (change)="calculatePercentage(edu)" style="width: 45%" required />
           <span *ngIf="edu.percentage">({{ edu.percentage }}%)</span>
         </td>
         <td>
           <button mat-button color="primary" (click)="savePreviousEducation(edu)">Save</button>
           <button mat-button color="warn" (click)="cancelEdit()">Cancel</button>
+          <button mat-button color="accent" (click)="clearForm(edu)">Clear</button>
         </td>
       </ng-container>
 

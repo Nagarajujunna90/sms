@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
-import { Student } from '../../models/student-personal-info.model';
+import { StudentPersonalInfo } from '../../models/student-personal-info.model';
 import { StudentService } from '../../services/student.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { filter } from 'rxjs';
@@ -79,14 +79,14 @@ export class StudentEditComponent implements OnInit {
   }
 
 
-student: Student | undefined ;
+student: StudentPersonalInfo | undefined ;
   getStudentById(id: number) {
     if (this.route.snapshot.params['id']) {
       this.studentId = this.route.snapshot.params['id']; // Edit Mode
       console.log(this.studentId)
     }
     this.studentService.getStudentById(id).subscribe(
-      (data: Student) => {
+      (data: StudentPersonalInfo) => {
         this.student = data;
       },
       (error) => {

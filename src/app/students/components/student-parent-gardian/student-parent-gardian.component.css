@@ -1,53 +1,4 @@
-.card {
-  background-color: #fff;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.card h3 {
-  margin-top: 0;
-  color: #3f51b5;
-  margin-bottom: 20px;
-  font-size: 20px;
-  font-weight: 600;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.form-field {
-  width: 100%;
-}
-
-mat-form-field {
-  width: 100%;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-  justify-content: flex-end;
-}
-
-button {
-  font-size: 14px;
-  padding: 8px 16px;
-  border-radius: 6px;
-}
-
-.mat-form-field-infix {
-  background-color: transparent !important;
-}
-
-/* ==== Table Styles ==== */
-
+/* Improved Table Styles */
 .table-container {
   width: 100%;
   overflow-x: auto;
@@ -81,20 +32,47 @@ tr:hover {
   background-color: #f9f9f9;
 }
 
+/* Input Styles */
 mat-form-field, input, mat-select {
   width: 100%;
   font-size: 14px;
+  margin-bottom: 10px;
 }
 
-/* === Add Button === */
-.add-button {
-  margin-top: 12px;
-  margin-bottom: 16px;
+/* Action Buttons Styles */
+.add-button, .clear-button {
+  margin-top: 16px;
   display: flex;
   justify-content: flex-end;
 }
 
-.percentage-text {
-  font-weight: 500;
-  color: #00796b;
+button {
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 6px;
+}
+
+/* Clear button style */
+.clear-button button {
+  background-color: #f44336;
+  color: white;
+}
+
+.clear-button button:hover {
+  background-color: #d32f2f;
+}
+
+/* Save button style (disabled when invalid) */
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Snackbar Styles for Validation Messages */
+.snackbar-success {
+  background-color: #4caf50;
+}
+
+.snackbar-error {
+  background-color: #f44336;
 }

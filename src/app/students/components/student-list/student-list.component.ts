@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SharedModule } from '../../../shared/shared.module';
-import { Student } from '../../models/student-personal-info.model';
+import { StudentPersonalInfo } from '../../models/student-personal-info.model';
 import { StudentService } from '../../services/student.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { StudentService } from '../../services/student.service';
   styleUrls: ['./student-list.component.css']
 })
 export class StudentListComponent implements OnInit {
-  students: Student[] = [];
+  students: StudentPersonalInfo[] = [];
 
   constructor(private studentService: StudentService, private router: Router) { }
 

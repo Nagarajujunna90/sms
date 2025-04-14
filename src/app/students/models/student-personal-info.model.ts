@@ -1,4 +1,4 @@
-export interface Student {
+export interface StudentPersonalInfo {
   studentId: number; // ✅ Add this field
   userName: string;
   firstName: string;
@@ -6,9 +6,9 @@ export interface Student {
   gender: string;
   age: number;
   dateOfBirth: string; // Format: YYYY-MM-DD
-  mobileNumber: string;
+  phoneNumber: string;
   identityMarks: string;
   profilePicture: string;
-  emaild:string;
+  emailId:string;
  
 }

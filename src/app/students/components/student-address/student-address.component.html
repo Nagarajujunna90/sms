@@ -1,52 +1,73 @@
-
-<div class="card" >
+<div class="card">
   <h3>{{ isEditMode ? 'Update Address' : 'Add Address' }}</h3>
   <div class="form-grid">
+    
+    <!-- Address Type -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Address Type</mat-label>
-      <mat-select [(ngModel)]="studentAddresses[0].addressType" name="addressType">
+      <mat-select [(ngModel)]="studentAddresses[0].addressType" name="addressType" required>
         <mat-option value="permanent">Permanent</mat-option>
         <mat-option value="present">Present</mat-option>
       </mat-select>
+      <mat-error *ngIf="!studentAddresses[0].addressType">Address type is required.</mat-error>
     </mat-form-field>
 
+    <!-- House Number -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>House Number</mat-label>
-      <input matInput [(ngModel)]="studentAddresses[0].houseNumber" name="houseNumber" />
+      <input matInput [(ngModel)]="studentAddresses[0].houseNumber" name="houseNumber" required />
+      <mat-error *ngIf="!studentAddresses[0].houseNumber">House number is required.</mat-error>
     </mat-form-field>
 
+    <!-- Area -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Area</mat-label>
-      <input matInput [(ngModel)]="studentAddresses[0].area" name="area" />
+      <input matInput [(ngModel)]="studentAddresses[0].area" name="area" required />
+      <mat-error *ngIf="!studentAddresses[0].area">Area is required.</mat-error>
     </mat-form-field>
 
+    <!-- City -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>City</mat-label>
-      <input matInput [(ngModel)]="studentAddresses[0].city" name="city" />
+      <input matInput [(ngModel)]="studentAddresses[0].city" name="city" required />
+      <mat-error *ngIf="!studentAddresses[0].city">City is required.</mat-error>
     </mat-form-field>
 
+    <!-- State -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>State</mat-label>
-      <input matInput [(ngModel)]="studentAddresses[0].state" name="state" />
+      <input matInput [(ngModel)]="studentAddresses[0].state" name="state" required />
+      <mat-error *ngIf="!studentAddresses[0].state">State is required.</mat-error>
     </mat-form-field>
 
+    <!-- Country -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Country</mat-label>
-      <input matInput [(ngModel)]="studentAddresses[0].country" name="country" />
+      <input matInput [(ngModel)]="studentAddresses[0].country" name="country" required />
+      <mat-error *ngIf="!studentAddresses[0].country">Country is required.</mat-error>
     </mat-form-field>
 
+    <!-- ZIP Code -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>ZIP Code</mat-label>
-      <input matInput [(ngModel)]="studentAddresses[0].zipCode" name="zipCode" />
+      <input matInput [(ngModel)]="studentAddresses[0].zipCode" name="zipCode" required pattern="^\d{6}$" />
+      <mat-error *ngIf="!studentAddresses[0].zipCode">ZIP code is required (6 digits).</mat-error>
     </mat-form-field>
 
+    <!-- Landmark -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Landmark</mat-label>
       <input matInput [(ngModel)]="studentAddresses[0].landmark" name="landmark" />
     </mat-form-field>
   </div>
 
-  <button mat-raised-button color="primary" (click)="saveAddress()">
+  <!-- Save Address Button -->
+  <button mat-raised-button color="primary" (click)="saveAddress()" [disabled]="!isFormValid()">
     {{ isEditMode ? 'Update Address' : 'Save Address' }}
+  </button>
+
+  <!-- Clear Button -->
+  <button mat-raised-button color="warn" (click)="clearForm()">
+    Clear
   </button>
 </div>

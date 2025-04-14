@@ -36,6 +36,8 @@ export class StudentAddComponent implements OnInit {
       this.selectedTab = index !== -1 ? index : 0;
       // Navigate to default tab if none selected
       if (!activeTab) {
+        console.log('No active tab found, navigating to personal-info');
+        this.selectedTab = 0; // Default to personal-info tab
         this.router.navigate(['personal-info'], { relativeTo: this.route });
       }
     });

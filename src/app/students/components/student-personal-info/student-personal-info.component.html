@@ -1,52 +1,72 @@
 <div class="card">
-  <h3>Personal Info</h3>
+  <h3>{{ isEditMode ? 'Update Personal Info' : 'Add Personal Info' }}</h3>
   <div class="form-grid">
 
+    <!-- First Name -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>First Name</mat-label>
-      <input matInput type="text" [(ngModel)]="student.firstName" name="firstName" />
+      <input matInput [(ngModel)]="studentPersonalInfo.firstName" name="firstName" required />
+      <mat-error *ngIf="!studentPersonalInfo.firstName">First Name is required.</mat-error>
     </mat-form-field>
 
+    <!-- Last Name -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Last Name</mat-label>
-      <input matInput type="text" [(ngModel)]="student.lastName" name="lastName" />
+      <input matInput [(ngModel)]="studentPersonalInfo.lastName" name="lastName" required />
+      <mat-error *ngIf="!studentPersonalInfo.lastName">Last Name is required.</mat-error>
     </mat-form-field>
 
+    <!-- User Name -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>User Name</mat-label>
-      <input matInput type="text" [(ngModel)]="student.userName" name="userName" />
+      <input matInput [(ngModel)]="studentPersonalInfo.userName" name="userName" required />
+      <mat-error *ngIf="!studentPersonalInfo.userName">User Name is required.</mat-error>
     </mat-form-field>
 
+    <!-- Gender -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Gender</mat-label>
-      <mat-select [(ngModel)]="student.gender" name="gender">
+      <mat-select [(ngModel)]="studentPersonalInfo.gender" name="gender" required>
         <mat-option value="Male">Male</mat-option>
         <mat-option value="Female">Female</mat-option>
       </mat-select>
+      <mat-error *ngIf="!studentPersonalInfo.gender">Gender is required.</mat-error>
     </mat-form-field>
 
+    <!-- Date of Birth -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Date of Birth</mat-label>
-      <input matInput [matDatepicker]="picker" [(ngModel)]="student.dateOfBirth" name="dob" />
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <input matInput [matDatepicker]="dobPicker" [(ngModel)]="studentPersonalInfo.dateOfBirth" name="dateOfBirth" required />
+      <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+      <mat-datepicker #dobPicker></mat-datepicker>
+      <mat-error *ngIf="!studentPersonalInfo.dateOfBirth">Date of Birth is required.</mat-error>
     </mat-form-field>
 
+    <!-- Email -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Email</mat-label>
-      <input matInput type="email" [(ngModel)]="student.emaild" name="email" />
+      <input matInput type="email" [(ngModel)]="studentPersonalInfo.emailId" name="emailId" required />
+      <mat-error *ngIf="!studentPersonalInfo.emailId">Email is required.</mat-error>
     </mat-form-field>
 
+    <!-- Phone Number -->
     <mat-form-field appearance="outline" class="form-field">
       <mat-label>Mobile Number</mat-label>
-      <input matInput type="text" [(ngModel)]="student.mobileNumber" name="phoneNumber" />
+      <input matInput type="text" [(ngModel)]="studentPersonalInfo.phoneNumber" name="phoneNumber" required pattern="^\d{10}$" />
+      <mat-error *ngIf="!studentPersonalInfo.phoneNumber">Phone Number is required.</mat-error>
+      <mat-error *ngIf="studentPersonalInfo.phoneNumber && studentPersonalInfo.phoneNumber.length !== 10">
+        Enter a valid 10-digit mobile number.
+      </mat-error>
     </mat-form-field>
 
   </div>
 
-  <div class="text-center mt-3">
-    <button mat-raised-button color="primary" (click)="savePersonalInfo()">
-      {{ mode === 'ADD' ? 'Add Personal Info' : 'Update Personal Info' }}
-    </button>
-  </div>
+  <!-- Buttons -->
+  <button mat-raised-button color="primary" (click)="savePersonalInfo()" [disabled]="!isFormValid()">
+    {{ isEditMode ? 'Update Personal Info' : 'Save Personal Info' }}
+  </button>
+
+  <button mat-raised-button color="warn" (click)="clearForm()" style="margin-left: 10px;">
+    Clear
+  </button>
 </div>

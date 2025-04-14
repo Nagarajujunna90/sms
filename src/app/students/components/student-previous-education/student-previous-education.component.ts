@@ -91,12 +91,25 @@ export class StudentPreviousEducationComponent implements OnInit {
   }
 
   calculatePercentage(entry: StudentPreviousAcademicDetails): void {
-    entry.percentage = entry.totalMarks > 0
-      ? +((entry.marks / entry.totalMarks) * 100).toFixed(2)
-      : 0;
+    if (entry.totalMarks > 0) {
+      entry.percentage = +((entry.marks / entry.totalMarks) * 100).toFixed(2);
+    } else {
+      entry.percentage = 0;
+    }
   }
 
   savePreviousEducation(entry: StudentPreviousAcademicDetails): void {
+    // Validate required fields
+    if (!entry.academicYear || !entry.grade || !entry.section || !entry.rollNumber || entry.marks === null || entry.totalMarks === null) {
+      this.showMessage('Please fill in all required fields.', 'error');
+      return;
+    }
+    
+    if (entry.marks > entry.totalMarks) {
+      this.showMessage('Marks cannot be greater than Total Marks.', 'error');
+      return;
+    }
+
     entry.studentId = this.studentId;
     this.studentService.savePreviousEducation(entry).subscribe({
       next: () => {
@@ -106,6 +119,11 @@ export class StudentPreviousEducationComponent implements OnInit {
       },
       error: () => this.showMessage('Failed to save previous education.', 'error')
     });
+  }
+
+  clearForm(entry: StudentPreviousAcademicDetails): void {
+    // Clear the form by resetting the current entry
+    Object.assign(entry, this.getEmptyEducationEntry());
   }
 
   private getEmptyEducationEntry(): StudentPreviousAcademicDetails {

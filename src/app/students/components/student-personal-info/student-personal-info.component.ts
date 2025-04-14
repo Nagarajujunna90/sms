@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+
 import { SharedModule } from '../../../shared/shared.module';
-import { Student } from '../../models/student-personal-info.model';
-import { StudentDataService } from '../../services/student-data.service';
+import { StudentPersonalInfo } from '../../models/student-personal-info.model';
 import { StudentService } from '../../services/student.service';
+import { StudentDataService } from '../../services/student-data.service';
 import { MessageService } from '../../services/message.service';
 
 @Component({
@@ -11,82 +13,61 @@ import { MessageService } from '../../services/message.service';
   standalone: true,
   imports: [SharedModule],
   templateUrl: './student-personal-info.component.html',
-  styleUrl: './student-personal-info.component.css'
+  styleUrls: ['./student-personal-info.component.css']
 })
-export class StudentPersonalInfoComponent implements OnInit{
+export class StudentPersonalInfoComponent {
+  studentPersonalInfo: StudentPersonalInfo = this.getDefaultStudent();
+  studentId: number = 0;
+  isEditMode = false;
+
   constructor(
     private studentService: StudentService,
     private messageService: MessageService,
-    private route: ActivatedRoute,
-    private studentDataService: StudentDataService 
+    private studentDataService: StudentDataService,
+    private route: ActivatedRoute
   ) {}
 
-  mode: 'ADD' | 'EDIT' = 'ADD';
-  student: Student = this.getDefaultStudent();
-  studentId: number = 0;
   ngOnInit(): void {
-    console.log('✅ StudentPersonalInfoComponent loaded!');
-    const idParam = this.route.parent?.snapshot.paramMap.get('id');
-    console.log('id param',idParam)
     this.studentDataService.getStudentId$().subscribe(id => {
       if (id) {
-        console.log('Personal Info Received Student ID:', id);
         this.studentId = id;
+        this.loadStudentData();
       }
     });
 
-    console.log('ADD',this.studentId)
-
-    if (idParam) {
-      this.mode = 'EDIT';
-      this.studentId = +idParam;
-      // Or get it from shared service if already available
-      //this.student = this.studentDataService.getStudentData();
-      this.studentService.getStudentById(this.studentId).subscribe({
-        next: (studentData) => {
-          this.student = studentData;
-          console.log('Fetched student from API:', this.student);
-          this.studentDataService.setStudentData(this.student );
-        },
-        error: () => {
-          this.messageService.show('Failed to load student data', 'error');
-        }
-      });
-      console.log('sharedData',this.student)
-    } else {
-      this.mode = 'ADD';
-      this.student = this.getDefaultStudent();
-      console.log('ADD',this.studentId)
-      if(this.studentId){
-        this.studentService.getStudentById(this.studentId).subscribe({
-          next:(response)=>{
-            this.student=response;
-          }
-        });
-      }
+    // Also check if student data already exists in shared service
+    const student = this.studentDataService.getStudentData();
+    if (student && student.studentId) {
+      this.studentPersonalInfo = student;
+      this.studentId = student.studentId;
+      this.isEditMode = true;
     }
   }
 
-  getDefaultStudent(): Student {
-    return {
-      studentId: 0,
-      userName: '',
-      firstName: '',
-      lastName: '',
-      gender: '',
-      age: 0,
-      dateOfBirth: '',
-      mobileNumber: '',
-      identityMarks: '',
-      profilePicture: '',
-      emaild: ''
-    };
+  private loadStudentData(): void {
+    this.studentService.getStudentById(this.studentId).subscribe({
+      next: (response) => {
+        this.studentPersonalInfo = response;
+        this.studentDataService.setStudentData(response);
+        this.isEditMode = true;
+      },
+      error: () => {
+        this.messageService.show('Failed to fetch student data', 'error');
+      }
+    });
   }
 
   savePersonalInfo(): void {
-    if (this.mode === 'ADD') {
-      this.studentService.savePersonalInfo(this.student).subscribe({
-        next: response => {
+    this.studentPersonalInfo.studentId = this.studentId;
+
+    if (!this.isFormValid()) {
+      this.messageService.show('Please fill in all required fields correctly.', 'error');
+      return;
+    }
+
+    if (!this.isEditMode) {
+      this.studentService.savePersonalInfo(this.studentPersonalInfo).subscribe({
+        next: (response) => {
           this.studentId = response.studentId;
           this.studentDataService.setStudentId(this.studentId);
           this.messageService.show('Saved successfully!', 'success');
@@ -96,10 +77,8 @@ export class StudentPersonalInfoComponent implements OnInit{
         }
       });
     } else {
-      this.studentService.updateStudent(this.studentId, this.student).subscribe({
-        next: response => {
-          this.studentId = response.studentId;
-          this.studentDataService.setStudentId(this.studentId);
+      this.studentService.updateStudent(this.studentId, this.studentPersonalInfo).subscribe({
+        next: () => {
           this.messageService.show('Updated successfully!', 'success');
         },
         error: () => {
@@ -107,5 +86,32 @@ export class StudentPersonalInfoComponent implements OnInit{
         }
       });
     }
+  }
+
+  isFormValid(): boolean {
+    const s = this.studentPersonalInfo;
+    return !!(s.firstName && s.lastName && s.userName && s.gender &&
+              s.dateOfBirth && s.emailId && s.phoneNumber);
+  }
+
+  clearForm(): void {
+    this.studentPersonalInfo = this.getDefaultStudent();
+    this.isEditMode = false;
+  }
+
+  private getDefaultStudent(): StudentPersonalInfo {
+    return {
+      studentId: 0,
+      userName: '',
+      firstName: '',
+      lastName: '',
+      gender: '',
+      age: 0,
+      dateOfBirth: '',
+      phoneNumber: '',
+      identityMarks: '',
+      profilePicture: '',
+      emailId: ''
+    };
   }
 }
