@@ -1,0 +1,43 @@
+<div class="card">
+    <h3>{{ isEditMode ? 'Update Document' : 'Add Document' }}</h3>
+    <div class="form-grid">
+  
+      <!-- Document Type -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Document Type</mat-label>
+        <mat-select [(ngModel)]="studentDocuments[0].documentType" name="documentType" required>
+          <mat-option value="birth-certificate">Birth Certificate</mat-option>
+          <mat-option value="passport">Passport</mat-option>
+          <mat-option value="school-certificate">School Certificate</mat-option>
+          <mat-option value="others">Others</mat-option>
+        </mat-select>
+        <mat-error *ngIf="!studentDocuments[0].documentType">Document type is required.</mat-error>
+      </mat-form-field>
+  
+      <!-- Document URL -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Document URL</mat-label>
+        <input matInput [(ngModel)]="studentDocuments[0].documentUrl" name="documentUrl" required />
+        <mat-error *ngIf="!studentDocuments[0].documentUrl">Document URL is required.</mat-error>
+      </mat-form-field>
+  
+      <!-- Document Date -->
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Document Date</mat-label>
+        <input matInput [(ngModel)]="studentDocuments[0].documentDate" name="documentDate" required type="date" />
+        <mat-error *ngIf="!studentDocuments[0].documentDate">Document date is required.</mat-error>
+      </mat-form-field>
+  
+    </div>
+  
+    <!-- Save Document Button -->
+    <button mat-raised-button color="primary" (click)="saveDocument()" [disabled]="!isFormValid()">
+      {{ isEditMode ? 'Update Document' : 'Save Document' }}
+    </button>
+  
+    <!-- Clear Button -->
+    <button mat-raised-button color="warn" (click)="clearForm()">
+      Clear
+    </button>
+  </div>
+  

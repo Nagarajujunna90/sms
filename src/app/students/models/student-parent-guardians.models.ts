@@ -5,7 +5,7 @@ export interface StudentParentGardians {
     qualification: string;
     occupation: string;
     phoneNumber: string;
-    email: string;
+    emailId: string;
     age:number;
     relationType: 'Father' | 'Mother' | 'Guardian';
     studentId:number;

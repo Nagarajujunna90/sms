@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -7,6 +7,7 @@ import { StudentPersonalInfo } from '../../models/student-personal-info.model';
 import { StudentService } from '../../services/student.service';
 import { StudentDataService } from '../../services/student-data.service';
 import { MessageService } from '../../services/message.service';
+@Injectable({ providedIn: 'root' })
 
 @Component({
   selector: 'app-student-personal-info',
@@ -45,6 +46,7 @@ export class StudentPersonalInfoComponent {
   }
 
   private loadStudentData(): void {
+    if(this.studentId){
     this.studentService.getStudentById(this.studentId).subscribe({
       next: (response) => {
         this.studentPersonalInfo = response;
@@ -52,16 +54,16 @@ export class StudentPersonalInfoComponent {
         this.isEditMode = true;
       },
       error: () => {
-        this.messageService.show('Failed to fetch student data', 'error');
+        this.messageService.showMessage('Failed to fetch student data', 'error');
       }
     });
   }
-
+}
   savePersonalInfo(): void {
     this.studentPersonalInfo.studentId = this.studentId;
 
     if (!this.isFormValid()) {
-      this.messageService.show('Please fill in all required fields correctly.', 'error');
+      this.messageService.showMessage('Please fill in all required fields correctly.', 'error');
       return;
     }
 
@@ -70,19 +72,19 @@ export class StudentPersonalInfoComponent {
         next: (response) => {
           this.studentId = response.studentId;
           this.studentDataService.setStudentId(this.studentId);
-          this.messageService.show('Saved successfully!', 'success');
+          this.messageService.showMessage('Saved successfully!', 'success');
         },
         error: () => {
-          this.messageService.show('Something went wrong', 'error');
+          this.messageService.showMessage('Something went wrong', 'error');
         }
       });
     } else {
       this.studentService.updateStudent(this.studentId, this.studentPersonalInfo).subscribe({
         next: () => {
-          this.messageService.show('Updated successfully!', 'success');
+          this.messageService.showMessage('Updated successfully!', 'success');
         },
         error: () => {
-          this.messageService.show('Something went wrong', 'error');
+          this.messageService.showMessage('Something went wrong', 'error');
         }
       });
     }

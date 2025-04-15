@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { StudentPreviousAcademicDetails } from '../../models/student-previous-academic.model';
 import { SharedModule } from '../../../shared/shared.module';
 import { StudentDataService } from '../../services/student-data.service';
 import { StudentService } from '../../services/student.service';
+import { MessageService } from '../../services/message.service';
 
 @Component({
   selector: 'app-student-previous-education',
@@ -13,30 +14,30 @@ import { StudentService } from '../../services/student.service';
   styleUrls: ['./student-previous-education.component.css']
 })
 export class StudentPreviousEducationComponent implements OnInit {
-
   previousEducations: StudentPreviousAcademicDetails[] = [];
   studentId = 0;
-  previousEducationId = 0;
   academicYears: string[] = [];
-  selectedYear = '';
-  isEditMode = false;
   editIndex: number | null = null;
+  grades: string[] = ['Nursary', 'LKG', 'UKG', '1st Grade', '2nd Grade', '3rd Grade', '4th Grade', '5th Grade'];
+  studentStatuses: string[] = ['Active', 'InActive'];
+
+  @ViewChild('newRow') newRow: ElementRef | null = null;
 
   constructor(
     private studentService: StudentService,
     private snackBar: MatSnackBar,
-    private studentDataService: StudentDataService
+    private studentDataService: StudentDataService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     this.initializeAcademicYears();
     this.subscribeToStudentId();
-    this.fetchAllPreviousEducations();
   }
 
   private initializeAcademicYears(): void {
     const currentYear = new Date().getFullYear();
-    for (let i = currentYear - 2; i <= currentYear + 2; i++) {
+    for (let i = currentYear - 5; i < currentYear; i++) {
       this.academicYears.push(`${i}-${i + 1}`);
     }
   }
@@ -45,7 +46,6 @@ export class StudentPreviousEducationComponent implements OnInit {
     this.studentDataService.getStudentId$().subscribe(id => {
       if (id) {
         this.studentId = id;
-        console.log('Received Student ID:', id);
         this.fetchAllPreviousEducations();
       }
     });
@@ -57,9 +57,12 @@ export class StudentPreviousEducationComponent implements OnInit {
     this.studentService.getAllPreviousEducations(this.studentId).subscribe({
       next: (data) => {
         this.previousEducations = data || [];
+        if (!this.previousEducations.length) {
+          this.addNewEntry(); // Add default empty row if no data
+        }
       },
       error: (err) => {
-        console.error('Failed to fetch all previous education details:', err);
+        console.error('Failed to fetch previous education details:', err);
       }
     });
   }
@@ -68,6 +71,12 @@ export class StudentPreviousEducationComponent implements OnInit {
     const newEntry = this.getEmptyEducationEntry();
     this.previousEducations.push(newEntry);
     this.editIndex = this.previousEducations.length - 1;
+
+    setTimeout(() => {
+      if (this.newRow) {
+        this.newRow.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 300);
   }
 
   editEntry(index: number): void {
@@ -75,54 +84,62 @@ export class StudentPreviousEducationComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    this.editIndex = null;
-    this.fetchAllPreviousEducations();
+    if (this.editIndex !== null) {
+      const current = this.previousEducations[this.editIndex];
+      if (current.id === 0) {
+        this.previousEducations.splice(this.editIndex, 1);
+        if (!this.previousEducations.length) {
+          this.addNewEntry(); // Re-add empty row if all removed
+        }
+      } else {
+        this.fetchAllPreviousEducations(); // Reload data
+      }
+      this.editIndex = null;
+    }
   }
 
   deleteEntry(id: number): void {
     if (!confirm('Are you sure you want to delete this record?')) return;
+
     this.studentService.deletePreviousEducation(id).subscribe({
       next: () => {
-        this.showMessage('Record deleted successfully!', 'success');
+        this.messageService.showMessage('Record deleted successfully!', 'success');
         this.fetchAllPreviousEducations();
       },
-      error: () => this.showMessage('Failed to delete record.', 'error')
+      error: () => this.messageService.showMessage('Failed to delete record.', 'error')
     });
   }
 
-  calculatePercentage(entry: StudentPreviousAcademicDetails): void {
-    if (entry.totalMarks > 0) {
-      entry.percentage = +((entry.marks / entry.totalMarks) * 100).toFixed(2);
-    } else {
-      entry.percentage = 0;
-    }
-  }
-
   savePreviousEducation(entry: StudentPreviousAcademicDetails): void {
-    // Validate required fields
-    if (!entry.academicYear || !entry.grade || !entry.section || !entry.rollNumber || entry.marks === null || entry.totalMarks === null) {
-      this.showMessage('Please fill in all required fields.', 'error');
-      return;
-    }
-    
-    if (entry.marks > entry.totalMarks) {
-      this.showMessage('Marks cannot be greater than Total Marks.', 'error');
+    if (!entry.academicYear || !entry.grade || !entry.section || !entry.rollNumber || !entry.schoolName || !entry.schoolAddress) {
+      this.messageService.showMessage('Please fill in all required fields.', 'error');
       return;
     }
 
     entry.studentId = this.studentId;
-    this.studentService.savePreviousEducation(entry).subscribe({
-      next: () => {
-        this.showMessage('Previous education saved!', 'success');
-        this.editIndex = null;
-        this.fetchAllPreviousEducations();
-      },
-      error: () => this.showMessage('Failed to save previous education.', 'error')
-    });
+
+    if (entry.id === 0) {
+      this.studentService.savePreviousEducation(entry).subscribe({
+        next: () => {
+          this.messageService.showMessage('Previous education saved!', 'success');
+          this.editIndex = null;
+          this.fetchAllPreviousEducations();
+        },
+        error: () => this.messageService.showMessage('Failed to save previous education.', 'error')
+      });
+    } else {
+      this.studentService.updatePreviousEducation(entry.id, entry).subscribe({
+        next: () => {
+          this.messageService.showMessage('Previous education updated!', 'success');
+          this.editIndex = null;
+          this.fetchAllPreviousEducations();
+        },
+        error: () => this.messageService.showMessage('Failed to update previous education.', 'error')
+      });
+    }
   }
 
   clearForm(entry: StudentPreviousAcademicDetails): void {
-    // Clear the form by resetting the current entry
     Object.assign(entry, this.getEmptyEducationEntry());
   }
 
@@ -147,10 +164,7 @@ export class StudentPreviousEducationComponent implements OnInit {
     };
   }
 
-  private showMessage(message: string, type: 'success' | 'error'): void {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      panelClass: type === 'success' ? 'snackbar-success' : 'snackbar-error'
-    });
+  get isAddingNewRow(): boolean {
+    return this.editIndex === this.previousEducations.length - 1 && this.previousEducations[this.editIndex].id === 0;
   }
 }

@@ -1,26 +1,25 @@
 import { Component } from '@angular/core';
-import { StudentAddress } from '../../models/student-address.model';
 import { StudentDataService } from '../../services/student-data.service';
 import { StudentService } from '../../services/student.service';
 import { MessageService } from '../../services/message.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { StudentResponse } from '../../models/studentResponse.model';
 import { SharedModule } from '../../../shared/shared.module';
+import { StudentDocument } from '../../models/student-documents.model';
 
 @Component({
-  selector: 'app-student-address',
+  selector: 'app-student-document',
   standalone: true,
   imports: [SharedModule],
-  templateUrl: './student-address.component.html',
-  styleUrl: './student-address.component.css'
+  templateUrl: './student-documents.component.html',
+  styleUrls: ['./student-documents.component.css']
 })
-export class StudentAddressComponent {
+export class StudentDocumentComponent {
   student!: StudentResponse;
-  studentAddresses: StudentAddress[] = [];
-
+  studentDocuments: StudentDocument[] = [];
   studentId: number = 0;
   isEditMode = false;
-  addressId: number = 0;
+  documentId: number = 0;
 
   constructor(
     private studentService: StudentService,
@@ -28,7 +27,7 @@ export class StudentAddressComponent {
     private router: Router,
     private route: ActivatedRoute,
     private studentDataService: StudentDataService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.studentDataService.getStudentId$().subscribe(id => {
@@ -37,40 +36,39 @@ export class StudentAddressComponent {
       }
     });
 
-    this.studentDataService.getAddressId$().subscribe(id => {
+    this.studentDataService.getDocumentId$().subscribe(id => {
       if (id) {
-        this.addressId = id;
+        this.documentId = id;
       }
     });
 
-    this.studentAddresses = this.getDefaultAddress();
-    if (this.studentId && this.addressId) {
-      this.studentService.getAddress(this.addressId).subscribe({
+    this.studentDocuments = this.getDefaultDocument();
+    if (this.studentId && this.documentId) {
+      this.studentService.getDocument(this.documentId).subscribe({
         next: (response) => {
-          this.studentAddresses[0] = response;
+          this.studentDocuments[0] = response;
           this.isEditMode = true;
         },
         error: (err) => {
-          console.error('Failed to fetch address:', err);
+          console.error('Failed to fetch document:', err);
         }
       });
     }
 
     this.student = this.studentDataService.getStudentData();
-    if (this.student && this.student.studentAddresses && this.student.studentAddresses.length > 0) {
-      this.studentAddresses = this.student.studentAddresses;
-      this.addressId = this.studentAddresses[0].addressId;
+    if (this.student && this.student.studentDocuments && this.student.studentDocuments.length > 0) {
+      this.documentId = this.studentDocuments[0].documentId;
       this.isEditMode = true;
     }
   }
 
-  saveAddress() {
-    this.studentAddresses[0].studentId = this.studentId;
+  saveDocument() {
+    this.studentDocuments[0].studentId = this.studentId;
     if (!this.isEditMode) {
-      this.studentService.saveAddress(this.studentAddresses[0]).subscribe({
+      this.studentService.saveDocument(this.studentDocuments[0]).subscribe({
         next: (response) => {
-          this.addressId = response.addressId;
-          this.studentDataService.setAddressId(this.addressId);
+          this.documentId = response.documentId;
+          this.studentDataService.setDocumentId(this.documentId);
           this.messageService.showMessage('Saved successfully!', 'success');
         },
         error: (err) => {
@@ -78,7 +76,7 @@ export class StudentAddressComponent {
         }
       });
     } else {
-      this.studentService.updateAddress(this.addressId, this.studentAddresses[0]).subscribe({
+      this.studentService.updateDocument(this.documentId, this.studentDocuments[0]).subscribe({
         next: (response) => {
           this.messageService.showMessage('Updated successfully!', 'success');
         },
@@ -89,18 +87,13 @@ export class StudentAddressComponent {
     }
   }
 
-  getDefaultAddress(): StudentAddress[] {
+  getDefaultDocument(): StudentDocument[] {
     return [
       {
-        addressId: 0,
-        houseNumber: '',
-        area: '',
-        city: '',
-        state: '',
-        country: '',
-        zipCode: '',
-        addressType: 'Permanent',
-        landMark: '',
+        documentId: 0,
+        documentType: '',
+        documentUrl: '',
+        documentDate: '',
         studentId: 0
       }
     ];
@@ -108,12 +101,12 @@ export class StudentAddressComponent {
 
   // Check if the form is valid
   isFormValid(): boolean {
-    const address = this.studentAddresses[0];
-    return !!address.addressType && !!address.houseNumber && !!address.area && !!address.city && !!address.state && !!address.country && !!address.zipCode && /^\d{6}$/.test(address.zipCode);
+    const document = this.studentDocuments[0];
+    return !!document.documentType && !!document.documentUrl && !!document.documentDate;
   }
 
   clearForm() {
-    this.studentAddresses = this.getDefaultAddress();
+    this.studentDocuments = this.getDefaultDocument();
     this.isEditMode = false;
   }
 }

@@ -1,0 +1,13 @@
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}
+
+.add-button {
+  margin-top: 16px;
+}

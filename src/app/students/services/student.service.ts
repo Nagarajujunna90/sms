@@ -7,6 +7,7 @@ import { StudentParentGardians } from '../models/student-parent-guardians.models
 import { StudentPreviousAcademicDetails } from '../models/student-previous-academic.model';
 import { StudentGrade } from '../models/student-current-academic.model';
 import { StudentResponse } from '../models/studentResponse.model';
+import { StudentDocument } from '../models/student-documents.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,7 @@ export class StudentService {
     return this.http.post<StudentPersonalInfo>(`${this.baseUrl}/personal/student`, data, { headers: this.getHeaders() });
   }
 
+  
   getStudentById(id: number): Observable<StudentPersonalInfo> {
     return this.http.get<StudentPersonalInfo>(`${this.baseUrl}/personal/student/${id}`, { headers: this.getHeaders() });
   }
@@ -104,6 +106,9 @@ deleteParentGuardian(id: number): Observable<void> {
   savePreviousEducation(data: StudentPreviousAcademicDetails): Observable<StudentPreviousAcademicDetails> {
     return this.http.post<StudentPreviousAcademicDetails>(`${this.baseUrl}/student/academic`, data, { headers: this.getHeaders() });
   }
+  updatePreviousEducation(id:number,entry: StudentPreviousAcademicDetails):Observable<StudentPreviousAcademicDetails>  {
+    return this.http.put<StudentPreviousAcademicDetails>(`${this.baseUrl}/student/academic/${id}`,entry, { headers: this.getHeaders() });
+  }
 
   getPreviousEducation(educationId: number): Observable<StudentPreviousAcademicDetails> {
     return this.http.get<StudentPreviousAcademicDetails>(`${this.baseUrl}/student/academic/${educationId}`, { headers: this.getHeaders() });
@@ -114,4 +119,29 @@ deleteParentGuardian(id: number): Observable<void> {
   deletePreviousEducation(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/student/academic/${id}`, { headers: this.getHeaders() });
   }
+
+  
+  getDocument(documentId: number): Observable<StudentDocument> {
+    return this.http.get<StudentDocument>(`/api/documents/${documentId}`);
+  }
+  getAllDocuments(studentId: number): Observable<StudentDocument[]> {
+    return this.http.get<StudentDocument[]>(`/api/students/${studentId}/documents`);
+  }
+  getDocumentById(id: number): Observable<StudentDocument> {  
+    return this.http.get<StudentDocument>(`${this.baseUrl}/student/documents/${id}`, { headers: this.getHeaders() });
+  }
+  getAllDocumentsById(id: number): Observable<StudentDocument[]> {  
+    return this.http.get<StudentDocument[]>(`${this.baseUrl}/student/documents/student/${id}`, { headers: this.getHeaders() });
+  }
+  deleteDocument(id: number): Observable<void> {        
+    return this.http.delete<void>(`${this.baseUrl}/student/documents/${id}`, { headers: this.getHeaders() });
+  }
+  saveDocument(data: StudentDocument): Observable<StudentDocument> {  
+    return this.http.post<StudentDocument>(`${this.baseUrl}/student/documents`, data, { headers: this.getHeaders() });
+  }
+  updateDocument(id: number, data: StudentDocument): Observable<StudentDocument> {
+    return this.http.put<StudentDocument>(`${this.baseUrl}/student/documents/${id}`, data, { headers: this.getHeaders() });
+  }
+  
+
 }

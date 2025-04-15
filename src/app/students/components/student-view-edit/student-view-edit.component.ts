@@ -52,7 +52,7 @@ export class StudentViewEditComponent {
           this.studentParentGuardians = this.student.studentParentGuardians;
           this.studentGrade = this.student.studentGrade;
           this.studentPreviousAcademicDetails = this.student.studentPreviousAcademicDetails;
-          this.studentDocuments = this.student.documents;
+          this.studentDocuments = this.student.studentDocuments;
           this.studentDemographic = this.student.studentDemographic;
           this.studentTransport = this.student.transport;
           this.studentFeeDetails = this.student.feeDetails;
@@ -75,7 +75,7 @@ export class StudentViewEditComponent {
         state: '',
         country: '',
         zipCode: '',
-        landmark: '',
+        landMark: '',
         addressId: 0,
         studentId: 0
       }];
@@ -88,7 +88,7 @@ export class StudentViewEditComponent {
   studentParentGuardians: StudentParentGardians[] = this.student.studentParentGuardians;
   studentGrade: StudentGrade = this.student.studentGrade;
   studentPreviousAcademicDetails: StudentPreviousAcademicDetails[] = this.student.studentPreviousAcademicDetails;
-  studentDocuments: StudentDocuments[] = this.student.documents;
+  studentDocuments: StudentDocuments[] = this.student.studentDocuments;
   studentDemographic: StudentDemographic = this.student.studentDemographic;
   studentTransport: StudentTransport = this.student.transport;
   studentFeeDetails: StudentFeeDetails = this.student.feeDetails;
@@ -113,7 +113,7 @@ export class StudentViewEditComponent {
       lastName: '',
       dateOfBirth: '',
       age: 0,
-      email: '',
+      emailId: '',
       phoneNumber: '',
       identityMarks: '',
       profilePhoto: '',
@@ -127,7 +127,7 @@ export class StudentViewEditComponent {
           qualification: '',
           occupation: '',
           phoneNumber: '',
-          email: '',
+          emailId: '',
           relationType: 'Father',
           studentId: 0
         }
@@ -145,7 +145,6 @@ export class StudentViewEditComponent {
 
       studentPreviousAcademicDetails: [
         {
-          schoolName: '',
           grade: '',
           section: '',
           remark: '',
@@ -156,6 +155,7 @@ export class StudentViewEditComponent {
           percentage: 0,
           medium: '',
           studentStatus: '',
+          schoolName: '',
           schoolAddress: '',
           marks: 0,
           totalMarks: 0,
@@ -174,12 +174,12 @@ export class StudentViewEditComponent {
           country: '',
           zipCode: '',
           addressType: '',
-          landmark: '',
+          landMark: '',
           studentId: 0
         }
       ],
 
-      documents: [
+      studentDocuments: [
         {
           documentType: '',
           documentNumber: ''

@@ -41,6 +41,14 @@ export class ViewStudentsComponent implements OnInit {
     this.searchForm.reset();
     this.getStudents();
   }
+  deleteStudentInfo(id:number){
+    console.log(id)
+    this.studentService.deleteStudent(id).subscribe((response) => {
+      console.log(response);
+      this.getStudents();
+    });
+
+  }
   viewAndEditStudent(studentId:number){
     console.log(studentId)
     this.router.navigate(['dashboard/students/edit', studentId]);

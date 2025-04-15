@@ -8,5 +8,5 @@ export interface StudentAddress {
   country:string;
   zipCode: string;
   studentId: number;
-  landmark: string;
+  landMark: string;
 }

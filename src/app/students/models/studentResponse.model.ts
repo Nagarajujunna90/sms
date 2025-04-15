@@ -15,7 +15,7 @@ export interface StudentResponse {
   lastName: string;
   dateOfBirth: string;
   age:number;
-  email: string;
+  emailId: string;
   phoneNumber: string;
   identityMarks: string;
   profilePhoto: string;
@@ -25,7 +25,7 @@ export interface StudentResponse {
   studentGrade: StudentGrade;
   studentPreviousAcademicDetails: StudentPreviousAcademicDetails[];
   studentAddresses: StudentAddress[];
-  documents: StudentDocuments[];
+  studentDocuments: StudentDocuments[];
   studentDemographic: StudentDemographic;
   transport: StudentTransport;
   feeDetails: StudentFeeDetails;

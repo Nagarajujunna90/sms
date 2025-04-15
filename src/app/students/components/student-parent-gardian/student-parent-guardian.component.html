@@ -1,0 +1,88 @@
+<form #parentForm="ngForm">
+  <div class="table-container">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Relation</th>
+          <th>Mobile</th>
+          <th>Email</th>
+          <th>Occupation</th>
+          <th>Qualification</th>
+          <th>Age</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let parent of parentGuardians; let i = index">
+          <ng-container *ngIf="editIndex === i; else viewMode">
+            <td>
+              <input type="text" [(ngModel)]="parent.name" name="name{{i}}" required #name="ngModel" />
+              <div *ngIf="name.invalid && name.touched" class="error">Name is required</div>
+            </td>
+            <td>
+              <select [(ngModel)]="parent.relationType" name="relationType{{i}}" required #relationType="ngModel">
+                <option value="">Select</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Guardian">Guardian</option>
+              </select>
+              <div *ngIf="relationType.invalid && relationType.touched" class="error">Relation is required</div>
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="parent.phoneNumber" name="phone{{i}}" required pattern="^[6-9][0-9]{9}$" #phone="ngModel" />
+              <div *ngIf="phone.errors?.['required'] && phone.touched" class="error">Mobile required</div>
+              <div *ngIf="phone.errors?.['pattern'] && phone.touched" class="error">Enter valid 10-digit number</div>
+            </td>
+            <td>
+              <input type="email" [(ngModel)]="parent.emailId" name="emailId{{i}}" required #emailId="ngModel" />
+              <div *ngIf="emailId.invalid && emailId.touched" class="error">Valid emailId required</div>
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="parent.occupation" name="occupation{{i}}" required #occupation="ngModel" />
+              <div *ngIf="occupation.invalid && occupation.touched" class="error">Occupation required</div>
+            </td>
+            <td>
+              <input type="text" [(ngModel)]="parent.qualification" name="qualification{{i}}" required #qualification="ngModel" />
+              <div *ngIf="qualification.invalid && qualification.touched" class="error">Qualification required</div>
+            </td>
+            <td>
+              <input type="number" [(ngModel)]="parent.age" name="age{{i}}" required min="18" max="100" #age="ngModel" />
+              <div *ngIf="age.invalid && age.touched" class="error">Age should be between 18-100</div>
+            </td>
+            <td>
+              <button mat-raised-button color="primary" (click)="saveParentGuardian(parent)" [disabled]="!parentForm.form.valid">Save</button>
+              <button mat-button color="warn" (click)="cancelEdit()">Clear</button>
+            </td>
+          </ng-container>
+
+          <ng-template #viewMode>
+            <td>{{ parent.name }}</td>
+            <td>{{ parent.relationType }}</td>
+            <td>{{ parent.phoneNumber }}</td>
+            <td>{{ parent.emailId }}</td>
+            <td>{{ parent.occupation }}</td>
+            <td>{{ parent.qualification }}</td>
+            <td>{{ parent.age }}</td>
+            <td>
+              <button mat-icon-button (click)="editEntry(i)">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button color="warn" (click)="deleteEntry(parent.guardianId)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-template>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="add-button" *ngIf="parentGuardians.length < 3">
+    <button mat-stroked-button color="accent" (click)="addNewEntry()">+ Add Another</button>
+  </div>
+
+  <div *ngIf="parentGuardians.length >= 3" class="error">
+    Only 3 parent/guardian records allowed.
+  </div>
+</form>

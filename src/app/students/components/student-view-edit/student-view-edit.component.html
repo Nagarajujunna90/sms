@@ -1,262 +1,146 @@
-<div [class.readonly-mode]="!isEditMode">
-  <div class="profile-container">
+<div class="student-profile-page">
+
   <!-- Header -->
-  <div class="profile-header">
-    <div class="avatar"></div>
-    <div class="profile-info">
-      <h2>{{ student.firstName }} {{ student.lastName }}</h2>
-      <div class="class-info">
-        <div class="info-item">
-          <span class="label">Class:</span>
-          <span class="value">{{ student.studentGrade.grade }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">Section:</span>
-          <span class="value">{{ student.studentGrade.section }}</span>
-        </div>
-        <div class="info-item">
-          <span class="label">Roll Number:</span>
-          <span class="value">{{ student.studentGrade.rollNumber }}</span>
+  <mat-card class="profile-header-card">
+    <div class="profile-header-content">
+      <div class="avatar"></div>
+      <div class="profile-info">
+        <h2>{{ student.firstName }} {{ student.lastName }}</h2>
+        <div class="class-info">
+          <div class="info-item">
+            <strong>Class:</strong> {{ student.studentGrade.grade }}
+          </div>
+          <div class="info-item">
+            <strong>Section:</strong> {{ student.studentGrade.section }}
+          </div>
+          <div class="info-item">
+            <strong>Roll Number:</strong> {{ student.studentGrade.rollNumber }}
+          </div>
         </div>
       </div>
+      <button mat-raised-button color="primary" (click)="viewAndUpdateStudent(student.studentId)">Edit</button>
     </div>
-  </div>
-</div>
+  </mat-card>
 
+  <!-- Personal Info & Grade Info side-by-side -->
+  <div class="card-row">
+    <mat-card class="profile-section">
+      <mat-card-title>Personal Information</mat-card-title>
+      <mat-card-content class="grid-2col">
+        <div><label>First Name</label><p>{{ student.firstName }}</p></div>
+        <div><label>Last Name</label><p>{{ student.lastName }}</p></div>
+        <div><label>Gender</label><p>{{ student.gender }}</p></div>
+        <div><label>Date of Birth</label><p>{{ student.dateOfBirth | date }}</p></div>
+        <div><label>Email</label><p>{{ student.emailId }}</p></div>
+        <div><label>Phone</label><p>{{ student.phoneNumber }}</p></div>
+      </mat-card-content>
+    </mat-card>
 
-  <!-- Personal Info -->
-  <div class="card">
-    <h3>Personal Info</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>First Name</label>
-        <input type="text" [(ngModel)]="student.firstName" />
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input type="text" [(ngModel)]="student.lastName" />
-      </div>
-      <div class="form-group">
-        <label>Gender</label>
-        <input type="text" [(ngModel)]="student.gender" />
-      </div>
-      <div class="form-group">
-        <label>DOB</label>
-        <input type="date" [(ngModel)]="student.dateOfBirth" />
-      </div>
-      <div class="form-group">
-        <label>Blood Group</label>
-        <input type="text" [(ngModel)]="student.email" />
-      </div>
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" [(ngModel)]="student.email" />
-      </div>
-      <div class="form-group">
-        <label>Mobile Number</label>
-        <input type="text" [(ngModel)]="student.phoneNumber" />
-      </div>
-    </div>
-    <button (click)="viewAndUpdateStudent(student.studentId)">Edit</button>
+    <mat-card class="profile-section">
+      <mat-card-title>Grade Details</mat-card-title>
+      <mat-card-content class="grid-2col">
+        <div><label>Academic Year</label><p>{{ studentGrade.academicYear }}</p></div>
+        <div><label>Class</label><p>{{ studentGrade.grade }}</p></div>
+        <div><label>Section</label><p>{{ studentGrade.section }}</p></div>
+        <div><label>Roll Number</label><p>{{ studentGrade.rollNumber }}</p></div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <!-- Parent / Guardian Info -->
-  <div class="card">
-    <h3>Parent / Guardian Info</h3>
-    <table mat-table [dataSource]="studentParentGuardians" class="mat-elevation-z8">
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let parent">{{ parent.name }}</td>
-      </ng-container>
-      <ng-container matColumnDef="mobileNumber">
-        <th mat-header-cell *matHeaderCellDef>Mobile Number</th>
-        <td mat-cell *matCellDef="let parent">{{ parent.mobileNumber }}</td>
-      </ng-container>
-      <ng-container matColumnDef="occupation">
-        <th mat-header-cell *matHeaderCellDef>Occupation</th>
-        <td mat-cell *matCellDef="let parent">{{ parent.occupation }}</td>
-      </ng-container>
-      <ng-container matColumnDef="age">
-        <th mat-header-cell *matHeaderCellDef>Age</th>
-        <td mat-cell *matCellDef="let parent">{{ parent.age }}</td>
-      </ng-container>
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let parent">{{ parent.email }}</td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
+  <!-- Attendance, Fee Info -->
+  <div class="card-row">
+    <mat-card class="profile-section">
+      <mat-card-title>Attendance</mat-card-title>
+      <mat-card-content class="grid-2col">
+        <div><label>Total Days</label><p>{{ studentAttendance.totalWorkingDays }}</p></div>
+        <div><label>Days Present</label><p>{{ studentAttendance.daysPresent }}</p></div>
+      </mat-card-content>
+    </mat-card>
 
-  <!-- Grade Info -->
-  <div class="card">
-    <h3>Grade Info</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Academic Year</label>
-        <input type="text" [(ngModel)]="studentGrade.academicYear" />
-      </div>
-      <div class="form-group">
-        <label>Section</label>
-        <input type="text" [(ngModel)]="studentGrade.section" />
-      </div>
-      <div class="form-group">
-        <label>Roll Number</label>
-        <input type="text" [(ngModel)]="studentGrade.rollNumber" />
-      </div>
-    </div>
+    <mat-card class="profile-section">
+      <mat-card-title>Fee Details</mat-card-title>
+      <mat-card-content class="grid-2col">
+        <div><label>Fee Paid</label><p>{{ studentFeeDetails.feePaid }}</p></div>
+        <div><label>Balance</label><p>{{ studentFeeDetails.balance }}</p></div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
   <!-- Previous Academic Info -->
-  <div class="card">
-    <h3>Previous Academic Info</h3>
-    <table mat-table [dataSource]="studentPreviousAcademicDetails" class="mat-elevation-z8">
-      <ng-container matColumnDef="schoolName">
-        <th mat-header-cell *matHeaderCellDef>School Name</th>
-        <td mat-cell *matCellDef="let edu">{{ edu.schoolName }}</td>
-      </ng-container>
-      <ng-container matColumnDef="grade">
-        <th mat-header-cell *matHeaderCellDef>Class Name/Grade</th>
-        <td mat-cell *matCellDef="let edu">{{ edu.grade }}</td>
-      </ng-container>
-      <ng-container matColumnDef="academicYear">
-        <th mat-header-cell *matHeaderCellDef>Year</th>
-        <td mat-cell *matCellDef="let edu">{{ edu.academicYear }}</td>
-      </ng-container>
-      <ng-container matColumnDef="percentage">
-        <th mat-header-cell *matHeaderCellDef>Percentage</th>
-        <td mat-cell *matCellDef="let edu">{{ edu.percentage }}</td>
-      </ng-container>
-      <tr mat-header-row *matHeaderRowDef="eduColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: eduColumns;"></tr>
-    </table>
+  <mat-card class="profile-section full-width-card">
+    <mat-card-title>Previous Academic Records</mat-card-title>
+    <mat-card-content>
+      <table mat-table [dataSource]="studentPreviousAcademicDetails" class="mat-elevation-z1" style="width: 100%">
+        <ng-container matColumnDef="schoolName">
+          <th mat-header-cell *matHeaderCellDef>School</th>
+          <td mat-cell *matCellDef="let edu">{{ edu.schoolName }}</td>
+        </ng-container>
+        <ng-container matColumnDef="grade">
+          <th mat-header-cell *matHeaderCellDef>Grade</th>
+          <td mat-cell *matCellDef="let edu">{{ edu.grade }}</td>
+        </ng-container>
+        <ng-container matColumnDef="academicYear">
+          <th mat-header-cell *matHeaderCellDef>Year</th>
+          <td mat-cell *matCellDef="let edu">{{ edu.academicYear }}</td>
+        </ng-container>
+        <ng-container matColumnDef="percentage">
+          <th mat-header-cell *matHeaderCellDef>Percentage</th>
+          <td mat-cell *matCellDef="let edu">{{ edu.percentage }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="eduColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: eduColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Parent Info as Previous Education Style Table -->
+  <mat-card class="profile-section full-width-card">
+    <mat-card-title>Parent / Guardian Details</mat-card-title>
+    <mat-card-content>
+      <table mat-table [dataSource]="studentParentGuardians" class="mat-elevation-z1" style="width: 100%">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Name</th>
+          <td mat-cell *matCellDef="let parent">{{ parent.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="mobileNumber">
+          <th mat-header-cell *matHeaderCellDef>Mobile</th>
+          <td mat-cell *matCellDef="let parent">{{ parent.phoneNumber }}</td>
+        </ng-container>
+        <ng-container matColumnDef="occupation">
+          <th mat-header-cell *matHeaderCellDef>Occupation</th>
+          <td mat-cell *matCellDef="let parent">{{ parent.occupation }}</td>
+        </ng-container>
+        <ng-container matColumnDef="age">
+          <th mat-header-cell *matHeaderCellDef>Age</th>
+          <td mat-cell *matCellDef="let parent">{{ parent.age }}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef>Email</th>
+          <td mat-cell *matCellDef="let parent">{{ parent.emailId }}</td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Documents & Transport Info side-by-side -->
+  <div class="card-row">
+    <mat-card class="profile-section">
+      <mat-card-title>Documents</mat-card-title>
+      <mat-card-content class="grid-2col">
+        <!-- <div><label>Birth Certificate</label><p>{{ studentDocuments[0]?.documentType }}</p></div>
+        <div><label>Aadhaar</label><p>{{ studentDocuments[0]?.documentNumber }}</p></div> -->
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="profile-section">
+      <mat-card-title>Transport</mat-card-title>
+      <mat-card-content class="grid-2col">
+        <div><label>Route No</label><p>{{ studentTransport.busRouteNumber }}</p></div>
+        <div><label>Pickup Point</label><p>{{ studentTransport.pickupPoint }}</p></div>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <!-- Address Info -->
-<div class="card">
-  <h3>Address Info</h3>
-  <div class="form-grid">
-    <div class="form-group">
-      <label>Address Type</label>
-      <select [(ngModel)]="studentAddresses[0].addressType">
-        <option value="permanent">Permanent</option>
-        <option value="present">Present</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label>House Number</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].houseNumber" />
-    </div>
-
-    <div class="form-group">
-      <label>Area</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].area" />
-    </div>
-
-    <div class="form-group">
-      <label>City</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].city" />
-    </div>
-
-    <div class="form-group">
-      <label>State</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].state" />
-    </div>
-
-    <div class="form-group">
-      <label>Country</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].country" />
-    </div>
-
-    <div class="form-group">
-      <label>ZIP Code</label>
-      <input type="text" [(ngModel)]="studentAddresses[0].zipCode" />
-    </div>
-  </div>
-</div>
-
-  <!-- Demographic Info
-  <div class="card">
-    <h3>Demographic Info</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Nationality</label>
-        <input type="text" [(ngModel)]="student.studentDemographic.nationality" />
-      </div>
-      <div class="form-group">
-        <label>Religion</label>
-        <input type="text" [(ngModel)]="student.studentDemographic.religion" />
-      </div>
-      <div class="form-group">
-        <label>Caste</label>
-        <input type="text" [(ngModel)]="student.studentDemographic.caste" />
-      </div>
-      <div class="form-group">
-        <label>Mother Toungue</label>
-        <input type="text" [(ngModel)]="student.studentDemographic.motherTongue" />
-      </div>
-    </div>
-  </div> -->
-
-  <!-- Transport Info -->
-  <div class="card">
-    <h3>Transport Info</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Route Number</label>
-        <input type="text" [(ngModel)]="studentTransport.busRouteNumber" />
-      </div>
-      <div class="form-group">
-        <label>Pickup Point</label>
-        <input type="text" [(ngModel)]="studentTransport.pickupPoint" />
-      </div>
-    </div>
-  </div>
-
-  <!-- Fee Info -->
-  <div class="card">
-    <h3>Fee Info</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Fee Paid</label>
-        <input type="text" [(ngModel)]="studentFeeDetails.feePaid" />
-      </div>
-      <div class="form-group">
-        <label>Due Amount</label>
-        <input type="text" [(ngModel)]="studentFeeDetails.dueDates" />
-      </div>
-    </div>
-  </div>
-
-  <!-- Attendance Info -->
-  <div class="card">
-    <h3>Attendance Info</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Total Days</label>
-        <input type="text" [(ngModel)]="studentAttendance.totalWorkingDays" />
-      </div>
-      <div class="form-group">
-        <label>Days Present</label>
-        <input type="text" [(ngModel)]="studentAttendance.daysPresent" />
-      </div>
-    </div>
-  </div>
-
-  <!-- Documents Info -->
-  <div class="card">
-    <h3>Documents Info</h3>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Birth Certificate</label>
-        <input type="text" [(ngModel)]="studentDocuments[0].documentType" />
-      </div>
-      <div class="form-group">
-        <label>Aadhaar</label>
-        <input type="text" [(ngModel)]="studentDocuments[0].documentNumber" />
-      </div>
-    </div>
-  </div>
 </div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StudentParentGardianComponent } from './student-parent-gardian.component';
+import { StudentParentGuardianComponent } from './student-parent-gardian.component';
 
-describe('StudentParentGardianComponent', () => {
-  let component: StudentParentGardianComponent;
-  let fixture: ComponentFixture<StudentParentGardianComponent>;
+describe('StudentParentGuardianComponent', () => {
+  let component: StudentParentGuardianComponent;
+  let fixture: ComponentFixture<StudentParentGuardianComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StudentParentGardianComponent]
+      imports: [StudentParentGuardianComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StudentParentGardianComponent);
+    fixture = TestBed.createComponent(StudentParentGuardianComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

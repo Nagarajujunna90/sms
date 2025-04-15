@@ -50,7 +50,9 @@
         <td>{{ student.studentClass }}</td>
         <td>{{ student.section }}</td>
         <td>{{ student.rollNumber }}</td>
-        <td><button  (click)="viewAndEditStudent(student.studentId)">Edit</button></td>
+        <td><button  (click)="viewAndEditStudent(student.studentId)">Edit</button><span>
+        <button  (click)="deleteStudentInfo(student.studentId)">Delete</button></span></td>
+
       </tr>
     </tbody>
   </table>

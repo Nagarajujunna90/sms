@@ -5,36 +5,34 @@
       <th>Class / Section</th>
       <th>Roll No.</th>
       <th>Medium</th>
-      <th>Status</th>
-      <th>Marks (%)</th>
+      <th>School Name</th>
+      <th>School Address</th>
       <th>Actions</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let edu of previousEducations; let i = index">
+    <tr *ngFor="let edu of previousEducations; let i = index" [id]="'row-' + i">
       <ng-container *ngIf="editIndex === i; else viewMode">
         <td>
-          <select [(ngModel)]="edu.academicYear" required>
+          <select [(ngModel)]="edu.academicYear" required [ngClass]="{'invalid': !edu.academicYear}">
             <option value="">Select</option>
             <option *ngFor="let year of academicYears" [value]="year">{{ year }}</option>
           </select>
         </td>
         <td>
-          <input type="text" [(ngModel)]="edu.grade" placeholder="Class" style="width: 45%" required />
+          <select [(ngModel)]="edu.grade" required [ngClass]="{'invalid': !edu.grade}">
+            <option value="">Select</option>
+            <option *ngFor="let grade of grades" [value]="grade">{{ grade }}</option>
+          </select>
           /
-          <input type="text" [(ngModel)]="edu.section" placeholder="Section" style="width: 45%" required />
+          <input type="text" [(ngModel)]="edu.section" placeholder="Section" style="width: 45%" required [ngClass]="{'invalid': !edu.section}" />
         </td>
-        <td><input type="number" [(ngModel)]="edu.rollNumber" required /></td>
-        <td><input type="text" [(ngModel)]="edu.medium" required /></td>
-        <td><input type="text" [(ngModel)]="edu.studentStatus" required /></td>
+        <td><input type="number" [(ngModel)]="edu.rollNumber" required [ngClass]="{'invalid': !edu.rollNumber}" /></td>
+        <td><input type="text" [(ngModel)]="edu.medium" required [ngClass]="{'invalid': !edu.medium}" /></td>
+        <td><input type="text" [(ngModel)]="edu.schoolName" required [ngClass]="{'invalid': !edu.schoolName}" /></td>
+        <td><input type="text" [(ngModel)]="edu.schoolAddress" required [ngClass]="{'invalid': !edu.schoolAddress}" /></td>
         <td>
-          <input type="number" [(ngModel)]="edu.marks" (change)="calculatePercentage(edu)" style="width: 45%" required />
-          /
-          <input type="number" [(ngModel)]="edu.totalMarks" (change)="calculatePercentage(edu)" style="width: 45%" required />
-          <span *ngIf="edu.percentage">({{ edu.percentage }}%)</span>
-        </td>
-        <td>
-          <button mat-button color="primary" (click)="savePreviousEducation(edu)">Save</button>
+          <button mat-button color="primary" (click)="savePreviousEducation(edu)" [disabled]="!edu.academicYear || !edu.grade || !edu.section || !edu.rollNumber || !edu.schoolName || !edu.schoolAddress">Save</button>
           <button mat-button color="warn" (click)="cancelEdit()">Cancel</button>
           <button mat-button color="accent" (click)="clearForm(edu)">Clear</button>
         </td>
@@ -45,11 +43,8 @@
         <td>{{ edu.grade }} / {{ edu.section }}</td>
         <td>{{ edu.rollNumber }}</td>
         <td>{{ edu.medium }}</td>
-        <td>{{ edu.studentStatus }}</td>
-        <td>
-          {{ edu.marks }}/{{ edu.totalMarks }}
-          <span *ngIf="edu.percentage">({{ edu.percentage }}%)</span>
-        </td>
+        <td>{{ edu.schoolName }}</td>
+        <td>{{ edu.schoolAddress }}</td>
         <td>
           <button mat-icon-button color="primary" (click)="editEntry(i)">
             <mat-icon>edit</mat-icon>
@@ -63,5 +58,12 @@
   </tbody>
 </table>
 
-<!-- ✅ Add New Button -->
-<button mat-stroked-button color="accent" (click)="addNewEntry()">+ Add Another</button>
+<!-- Add New Button -->
+<button mat-stroked-button color="accent" (click)="addNewEntry()" [disabled]="isAddingNewRow">+ Add Another</button>
+
+<!-- Add styling for invalid fields -->
+<style>
+  .invalid {
+    border: 1px solid red;
+  }
+</style>

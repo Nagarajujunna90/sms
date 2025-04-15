@@ -96,10 +96,10 @@ export class StudentAcademicDetailsComponent {
           this.gradeId=response.gradeId;
           console.log(this.gradeId)
           this.studentDataService.setGradeId(response.gradeId)
-          this.messageService.show('Saved successfully!', 'success');
+          this.messageService.showMessage('Saved successfully!', 'success');
         },
         error: (err) => {
-          this.messageService.show('Something went wrong', 'error');
+          this.messageService.showMessage('Something went wrong', 'error');
         }
       });
 
@@ -108,10 +108,10 @@ export class StudentAcademicDetailsComponent {
         next: (response) => {
           this.gradeId=response.gradeId;
           this.studentDataService.setGradeId(response.gradeId)
-          this.messageService.show('Saved successfully!', 'success');
+          this.messageService.showMessage('Saved successfully!', 'success');
         },
         error: (err) => {
-          this.messageService.show('Something went wrong', 'error');
+          this.messageService.showMessage('Something went wrong', 'error');
         }
       });
     }

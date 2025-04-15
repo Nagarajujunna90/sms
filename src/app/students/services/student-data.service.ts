@@ -1,36 +1,43 @@
-// student-data.service.ts
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { StudentPersonalInfo } from '../models/student-personal-info.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentDataService {
-  private studentIdSubject = new BehaviorSubject<number | null>(null);
-  private addressIdSubject = new BehaviorSubject<number | null>(null);
-  private gradeIdSubject=new BehaviorSubject<number | null>(null);
-  private parentGuardianIdSubject=new BehaviorSubject<number | null>(null);
-  private previoursEducationIdSubject=new BehaviorSubject<number | null>(null);
+  private studentIdSubject = new BehaviorSubject<number | null>(
+    sessionStorage.getItem('studentId') ? +sessionStorage.getItem('studentId')! : null
+  );
+  private addressIdSubject = new BehaviorSubject<number | null>(
+    sessionStorage.getItem('addressId') ? +sessionStorage.getItem('addressId')! : null
+  );
+  private gradeIdSubject = new BehaviorSubject<number | null>(
+    sessionStorage.getItem('gradeId') ? +sessionStorage.getItem('gradeId')! : null
+  );
+  private parentGuardianIdSubject = new BehaviorSubject<number | null>(
+    sessionStorage.getItem('parentGuardianId') ? +sessionStorage.getItem('parentGuardianId')! : null
+  );
+  private previoursEducationIdSubject = new BehaviorSubject<number | null>(
+    sessionStorage.getItem('previoursEducationId') ? +sessionStorage.getItem('previoursEducationId')! : null
+  );
 
-  constructor(private http: HttpClient) {}
-  private apiUrl = 'http://localhost:6063/ems/v1/personal/student'; // Update API endpoint
-
-   getStudentById(id: number): Observable<StudentPersonalInfo> {
-     return this.http.get<StudentPersonalInfo>(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
-   }
-   private getHeaders() {
-    const token = localStorage.getItem('authToken'); // ✅ Get token from local storage
-    console.log(token)
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}` // 
-    });
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-   
+  // Student ID for document
+  private documentIdSubject = new BehaviorSubject<number | null>(
+    sessionStorage.getItem('documentId') ? +sessionStorage.getItem('documentId')! : null
+  );
+  getDocumentId$(): Observable<number | null> {
+    return this.documentIdSubject.asObservable();
   }
+  setDocumentId(id: number) {
+    sessionStorage.setItem('documentId', id.toString());
+    this.documentIdSubject.next(id);
+  }
+  getDocumentIdValue(): number | null {
+    return this.documentIdSubject.getValue();
+  }
+    
 
+  // Store full student data in memory only
   private studentData: any;
 
   setStudentData(data: any): void {
@@ -41,8 +48,9 @@ export class StudentDataService {
     return this.studentData;
   }
 
-  //set studentId
+  // Student ID
   setStudentId(id: number) {
+    sessionStorage.setItem('studentId', id.toString());
     this.studentIdSubject.next(id);
   }
 
@@ -54,8 +62,9 @@ export class StudentDataService {
     return this.studentIdSubject.getValue();
   }
 
-  //set addressId
+  // Address ID
   setAddressId(id: number) {
+    sessionStorage.setItem('addressId', id.toString());
     this.addressIdSubject.next(id);
   }
 
@@ -66,33 +75,38 @@ export class StudentDataService {
   getAddressIdValue(): number | null {
     return this.addressIdSubject.getValue();
   }
- //set gradeId
- setGradeId(id: number) {
-  this.gradeIdSubject.next(id);
-}
 
-getGradeId$() {
-  return this.gradeIdSubject.asObservable();
-}
+  // Grade ID
+  setGradeId(id: number) {
+    sessionStorage.setItem('gradeId', id.toString());
+    this.gradeIdSubject.next(id);
+  }
 
-getGradeIdValue(): number | null {
-  return this.gradeIdSubject.getValue();
-}
- //set parentGuardianId
- setParentGuardianId(id: number) {
-  this.parentGuardianIdSubject.next(id);
-}
+  getGradeId$() {
+    return this.gradeIdSubject.asObservable();
+  }
 
-getParentGuardianId$() {
-  return this.parentGuardianIdSubject.asObservable();
-}
+  getGradeIdValue(): number | null {
+    return this.gradeIdSubject.getValue();
+  }
 
-getParentGuardianIdValue(): number | null {
-  return this.parentGuardianIdSubject.getValue();
-}
+  // Parent Guardian ID
+  setParentGuardianId(id: number) {
+    sessionStorage.setItem('parentGuardianId', id.toString());
+    this.parentGuardianIdSubject.next(id);
+  }
 
-  //set previoursEducationId
+  getParentGuardianId$() {
+    return this.parentGuardianIdSubject.asObservable();
+  }
+
+  getParentGuardianIdValue(): number | null {
+    return this.parentGuardianIdSubject.getValue();
+  }
+
+  // Previous Education ID
   setPrevioursEducationId(id: number) {
+    sessionStorage.setItem('previoursEducationId', id.toString());
     this.previoursEducationIdSubject.next(id);
   }
 
@@ -103,5 +117,4 @@ getParentGuardianIdValue(): number | null {
   getPrevioursEducationIdValue(): number | null {
     return this.previoursEducationIdSubject.getValue();
   }
-
 }

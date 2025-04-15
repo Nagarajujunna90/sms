@@ -1,78 +1,82 @@
-import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { StudentDataService } from '../../services/student-data.service';
 import { StudentService } from '../../services/student.service';
-import { StudentParentGardians } from '../../models/student-parent-guardians.models';
 import { MessageService } from '../../services/message.service';
+import { StudentParentGardians as StudentParentGuardians } from '../../models/student-parent-guardians.models';
 import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
-  selector: 'app-student-parent-guardian',
+  selector: 'app-parent-guardian',
   standalone: true,
   imports: [SharedModule],
-  templateUrl: './student-parent-gardian.component.html',
-  styleUrls: ['./student-parent-gardian.component.css']
+  templateUrl: './student-parent-guardian.component.html',
+  styleUrls: ['./student-parent-guardian.component.css']
 })
 export class StudentParentGuardianComponent implements OnInit {
-  parentGuardians: StudentParentGardians[] = [];
-  studentId = 0;
+  parentGuardians: StudentParentGuardians[] = [];
   editIndex: number | null = null;
+  studentId!: number;
+
+  @ViewChild('parentForm', { static: true }) parentForm!: NgForm;
 
   constructor(
-    private studentService: StudentService,
-    private snackBar: MatSnackBar,
     private studentDataService: StudentDataService,
+    private studentService: StudentService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
-    this.subscribeToStudentId();
-  }
-
-  private subscribeToStudentId(): void {
+    this.parentGuardians = [this.getEmptyParentGuardianEntry()]; // Initialize with an empty entry
     this.studentDataService.getStudentId$().subscribe(id => {
-      if (id) {
+      if (id !== null) {
         this.studentId = id;
         this.fetchAllParentGuardians();
       }
     });
   }
 
-  private fetchAllParentGuardians(): void {
+  fetchAllParentGuardians(): void {
     if (!this.studentId) return;
-
     this.studentService.getAllParentGuardiansById(this.studentId).subscribe({
-      next: (data) => {
+      next: (data: StudentParentGuardians[]) => {
         this.parentGuardians = data || [];
         if (this.parentGuardians.length === 0) {
-          this.addNewEntry(); // default row if empty
+          this.addNewEntry();
         } else {
           this.editIndex = null;
         }
       },
-      error: (err) => {
-        console.error('Failed to fetch parent/guardian details:', err);
-      }
+      error: (err: any) => console.error('Error fetching parent/guardian data', err)
     });
   }
 
   addNewEntry(): void {
-    const newEntry = this.getEmptyParentGuardianEntry();
-    this.parentGuardians.push(newEntry);
+    if (this.parentForm && !this.parentForm.form.valid && this.editIndex !== null) {
+      this.messageService.showMessage('Please complete the current entry before adding a new one.', 'error');
+      return;
+    }
+
+    if (this.parentGuardians.length >= 3) {
+      this.messageService.showMessage('Only 3 parent/guardian records allowed.', 'error');
+      return;
+    }
+
+    this.parentGuardians.push(this.getEmptyParentGuardianEntry());
     this.editIndex = this.parentGuardians.length - 1;
   }
 
-  private getEmptyParentGuardianEntry(): StudentParentGardians {
+  getEmptyParentGuardianEntry(): StudentParentGuardians {
     return {
       guardianId: 0,
       studentId: this.studentId,
       name: '',
-      relationType: 'Guardian',
+      relationType: 'Father',
       phoneNumber: '',
-      email: '',
+      emailId: '',
       occupation: '',
       qualification: '',
-      age: 18
+      age: 0
     };
   }
 
@@ -81,30 +85,49 @@ export class StudentParentGuardianComponent implements OnInit {
   }
 
   cancelEdit(): void {
-    this.editIndex = null;
-    this.fetchAllParentGuardians();
+    if (this.editIndex !== null) {
+      const editingRow = this.parentGuardians[this.editIndex];
+      if (editingRow.guardianId === 0) {
+        this.parentGuardians.splice(this.editIndex, 1);
+      }
+      this.editIndex = null;
+    }
   }
 
-  deleteEntry(id: number): void {
-    if (!confirm('Are you sure you want to delete this record?')) return;
-    this.studentService.deleteParentGuardian(id).subscribe({
+  saveParentGuardian(parent: StudentParentGuardians): void {
+    if (!this.parentForm.form.valid) {
+      this.messageService.showMessage('Please correct the errors before saving.', 'error');
+      return;
+    }
+
+    parent.studentId = this.studentId;
+    const isNew = parent.guardianId === 0;
+    const request = this.studentService.saveParentInfo(parent);
+
+    request.subscribe({
       next: () => {
-        this.messageService.show('Deleted successfully!', 'success');
+        this.messageService.showMessage(isNew ? 'Parent/Guardian added' : 'Updated successfully', 'success');
         this.fetchAllParentGuardians();
+        this.editIndex = null;
       },
-      error: () => this.messageService.show('Failed to delete!', 'error')
+      error: (err: any) => {
+        console.error('Save failed:', err);
+        this.messageService.showMessage('Save failed.', 'error');
+      }
     });
   }
 
-  saveParentGuardian(entry: StudentParentGardians): void {
-    entry.studentId = this.studentId;
-    this.studentService.saveParentInfo(entry).subscribe({
+  deleteEntry(guardianId: number): void {
+    if (!guardianId) return;
+    this.studentService.deleteParentGuardian(guardianId).subscribe({
       next: () => {
-        this.messageService.show('Parent/Guardian details saved!', 'success');
-        this.editIndex = null;
+        this.messageService.showMessage('Deleted successfully', 'success');
         this.fetchAllParentGuardians();
       },
-      error: () => this.messageService.show('Failed to save parent/guardian details.', 'error')
+      error: (err: any) => {
+        console.error('Delete failed:', err);
+        this.messageService.showMessage('Delete failed.', 'error');
+      }
     });
   }
 }

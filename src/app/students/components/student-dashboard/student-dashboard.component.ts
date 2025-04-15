@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-students',
@@ -11,8 +11,9 @@ import { RouterModule } from '@angular/router';
   styleUrl: './student-dashboard.component.css'
 })
 export class StudentDashboardComponent {
-  constructor() {
-    console.log("initilized")
+  
+  constructor(private router: Router) {
+    console.log("initilized");
 
   }
   selectedTab: number = 0;  // Initialize with first tab selected
@@ -28,4 +29,12 @@ export class StudentDashboardComponent {
     this.selectedTab = index;
   }
 
+  onInit() {
+    console.log("initilized") 
+    console.log(this.selectedTab);
+    console.log(this.tabs);
+
+    //I need routing when it is initialized to the first tab
+    this.router.navigate(['/students/personal-info']);
+  } // This method is called when the component is initialized
 }
